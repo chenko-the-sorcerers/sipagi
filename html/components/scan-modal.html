@@ -1,0 +1,54 @@
+<div id="scanModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Hasil Scan Gizi Makanan</h2>
+            <button class="close-btn" onclick="closeScanModal()">×</button>
+        </div>
+        
+        <div style="background: var(--bg-light); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
+            <h3 style="font-family: 'Outfit'; font-weight: 700; color: var(--dark-blue); margin-bottom: 1rem;">
+                📸 Nasi Ayam Suwir + Sayur Asem
+            </h3>
+            <p style="color: var(--text-gray); margin-bottom: 1rem;">
+                <strong>Waktu Scan:</strong> 20 April 2026, 08:30 WIB | <strong>Lokasi:</strong> SDN 01 Depok
+            </p>
+        </div>
+
+        <div class="nutrition-grid">
+            <div class="nutrition-card">
+                <h4>📊 Informasi Umum</h4>
+                <div class="nutrition-item">
+                    <span class="nutrition-label">Berat Porsi</span>
+                    <span class="nutrition-value">350g</span>
+                </div>
+                <div class="nutrition-item">
+                    <span class="nutrition-label">Total Kalori</span>
+                    <span class="nutrition-value">450 kkal</span>
+                </div>
+                <div class="nutrition-item">
+                    <span class="nutrition-label">Kategori</span>
+                    <span class="nutrition-value">Makanan Utama</span>
+                </div>
+                <div class="nutrition-item">
+                    <span class="nutrition-label">Status Gizi</span>
+                    <span class="nutrition-value" style="color: var(--success);">✓ Sesuai Standar</span>
+                </div>
+            </div>
+
+            <!-- Bagian ini aku potong sedikit untuk contoh, kamu bisa copas FULL isi modal dari kodemu sebelumnya ke sini -->
+            
+            <div class="nutrition-card">
+                <h4>📋 Rekomendasi & Catatan</h4>
+                <div class="nutrition-item">
+                    <span class="nutrition-label">Kelayakan Distribusi</span>
+                    <span class="nutrition-value" style="color: var(--success);">Layak</span>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-top: 1.5rem; justify-content: flex-end;">
+            <button class="btn btn-outline" onclick="closeScanModal()">Tutup</button>
+            <button class="btn btn-primary">Setujui & Distribusikan</button>
+        </div>
+    </div>
+</div>

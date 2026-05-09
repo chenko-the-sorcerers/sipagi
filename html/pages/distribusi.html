@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distribusi Pangan - SIPAGI</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel="stylesheet" href="../../style.css">
+    
+    <!-- Leaflet Map CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        .clickable-row { cursor: pointer; transition: background 0.2s; }
+        .clickable-row:hover { background: var(--light-blue) !important; }
+        
+        /* Map Container */
+        #routeMap { height: 350px; width: 100%; border-radius: 12px; margin-bottom: 1.5rem; z-index: 1; border: 2px solid var(--border); }
+
+        /* Journey Timeline */
+        .timeline { position: relative; padding-left: 30px; margin-top: 1rem; }
+        .timeline::before { content: ''; position: absolute; left: 7px; top: 5px; width: 2px; height: 85%; background: var(--border); }
+        .timeline-item { position: relative; margin-bottom: 1.5rem; }
+        .timeline-dot { position: absolute; left: -30px; width: 16px; height: 16px; border-radius: 50%; background: var(--border); border: 3px solid #fff; z-index: 2; }
+        
+        .timeline-item.completed .timeline-dot { background: var(--success); }
+        .timeline-item.active .timeline-dot { background: var(--warning); animation: pulse 1.5s infinite; }
+        .timeline-item.pending .timeline-dot { background: var(--bg-light); border-color: var(--text-gray); }
+
+        .timeline-content h4 { font-size: 0.9rem; margin-bottom: 2px; color: var(--text-dark); }
+        .timeline-content p { font-size: 0.8rem; color: var(--text-gray); }
+
+        @keyframes pulse { 
+            0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); } 
+            70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); } 
+            100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); } 
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar" id="sidebar-container"></aside>
+
+    <div class="main-content">
+        <!-- Topbar -->
+        <div class="topbar">
+            <div class="topbar-left">
+                <h2 id="page-title">Monitoring Distribusi</h2>
+                <div class="breadcrumb"><span>Home</span> <span>/</span> <span>Distribusi</span></div>
+            </div>
+            <div class="topbar-right">
+                <div class="search-box">
+                    <i class="fi fi-rr-search"></i>
+                    <input type="text" id="search-distribusi" placeholder="Cari rute atau sekolah...">
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section active" style="display: block;">
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header"><div class="stat-icon blue"><i class="fi fi-rr-truck-side"></i></div></div>
+                    <div class="stat-value">52</div><div class="stat-label">Armada Aktif se-DIY</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header"><div class="stat-icon green"><i class="fi fi-rr-box"></i></div></div>
+                    <div class="stat-value">15.255</div><div class="stat-label">Target Porsi Hari Ini</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header"><div class="stat-icon orange"><i class="fi fi-rr-clock"></i></div></div>
+                    <div class="stat-value">42 min</div><div class="stat-label">Rata-rata Waktu Kirim</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header"><div class="stat-icon purple"><i class="fi fi-rr-check-circle"></i></div></div>
+                    <div class="stat-value">99.2%</div><div class="stat-label">Tingkat Ketepatan</div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header"><h3>Beban Distribusi per Wilayah</h3></div>
+                    <div style="height: 300px;"><canvas id="distributionChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header"><h3>Status Pengiriman (155 Rute)</h3></div>
+                    <!-- Ini akan diisi oleh JavaScript -->
+                    <div class="progress-list" id="progress-container"></div>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="table-card-header">
+                    <h3>Log Pengiriman (Klik baris untuk detail perjalanan)</h3>
+                    <select id="filter-kabupaten" class="btn btn-outline">
+                        <option value="Semua">Semua Wilayah</option>
+                    </select>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Rute</th><th>Sekolah Tujuan</th><th>Wilayah</th><th>Porsi</th><th>Waktu</th><th>Status</th></tr>
+                    </thead>
+                    <tbody id="table-body-distribusi"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Detail Rute -->
+    <div id="routeModal" class="modal">
+        <div class="modal-content" style="max-width: 900px;">
+            <div class="modal-header">
+                <h2 id="modalTitle">Detail Rute</h2>
+                <button class="close-btn" onclick="window.closeRouteModal()">×</button>
+            </div>
+            <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 2rem;">
+                <div>
+                    <!-- Peta interaktif Leaflet -->
+                    <div id="routeMap"></div>
+                    <div style="background: var(--bg-light); padding: 1rem; border-radius: 12px;">
+                        <h4 style="margin-bottom: 0.5rem;">Informasi Tujuan</h4>
+                        <p id="modalSchoolInfo" style="font-size: 0.9rem; line-height: 1.6;"></p>
+                    </div>
+                </div>
+                <div>
+                    <h3>Tracking Journey</h3>
+                    <!-- Timeline Perjalanan -->
+                    <div class="timeline" id="journeyTimeline"></div>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                        <i class="fi fi-rr-phone-call"></i> Hubungi Kurir
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script type="module" src="../../js/pages/distribusi.js"></script>
+</body>
+</html>

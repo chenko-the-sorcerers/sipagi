@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Kesehatan - SIPAGI</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <aside class="sidebar" id="sidebar-container"></aside>
+
+    <div class="main-content">
+        <div class="topbar">
+            <div class="topbar-left">
+                <h2 id="page-title">Status Kesehatan</h2>
+                <div class="breadcrumb">
+                    <span>Home</span> <span>/</span> <span id="breadcrumb-text">Status Kesehatan</span>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <div class="search-box">
+                    <i class="fi fi-rr-search"></i>
+                    <input type="text" placeholder="Cari siswa atau sekolah...">
+                </div>
+                <button class="icon-btn"><i class="fi fi-rr-bell"></i></button>
+                <button class="icon-btn"><i class="fi fi-rr-user"></i></button>
+            </div>
+        </div>
+
+        <div class="content-section active" style="display: block;">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon green"><i class="fi fi-rr-heart"></i></div>
+                        <div class="stat-trend up"><i class="fi fi-rr-arrow-up"></i><span>5%</span></div>
+                    </div>
+                    <div class="stat-value">1,150</div>
+                    <div class="stat-label">Gizi Baik</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon orange"><i class="fi fi-rr-exclamation"></i></div>
+                        <div class="stat-trend down"><i class="fi fi-rr-arrow-down"></i><span>3%</span></div>
+                    </div>
+                    <div class="stat-value">85</div>
+                    <div class="stat-label">Gizi Kurang</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon danger" style="background: var(--danger-light); color: var(--danger);"><i class="fi fi-rr-alert"></i></div>
+                        <div class="stat-trend down"><i class="fi fi-rr-arrow-down"></i><span>2%</span></div>
+                    </div>
+                    <div class="stat-value">10</div>
+                    <div class="stat-label">Gizi Buruk</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon purple"><i class="fi fi-rr-stethoscope"></i></div>
+                        <div class="stat-trend up"><i class="fi fi-rr-arrow-up"></i><span>8%</span></div>
+                    </div>
+                    <div class="stat-value">92.4%</div>
+                    <div class="stat-label">Kondisi Sehat</div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Distribusi Status Gizi</h3>
+                    </div>
+                    <div class="progress-list">
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-label">Gizi Baik</span>
+                                <span class="progress-value">1,150 siswa (92.4%)</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill success" style="width: 92.4%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-label">Gizi Kurang</span>
+                                <span class="progress-value">85 siswa (6.8%)</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill warning" style="width: 6.8%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-label">Gizi Buruk</span>
+                                <span class="progress-value">10 siswa (0.8%)</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill danger" style="width: 0.8%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Tren Kesehatan 6 Bulan</h3>
+                    </div>
+                    <div class="chart-placeholder">
+                        📈 Line Chart
+                        <br><small>Peningkatan konsisten status gizi</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-card" style="margin-bottom: 2rem;">
+                <div class="table-card-header">
+                    <h3>Pemantauan Status Kesehatan Siswa</h3>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <button class="btn btn-outline"><i class="fi fi-rr-filter"></i> Filter</button>
+                        <button class="btn btn-primary"><i class="fi fi-rr-download"></i> Export</button>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Kategori</th>
+                            <th>Jumlah Siswa</th>
+                            <th>Persentase</th>
+                            <th>Tren</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Gizi Baik</td>
+                            <td>1,150</td>
+                            <td>92.4%</td>
+                            <td style="color: var(--success);">↑ Meningkat 5%</td>
+                            <td><button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Detail</button></td>
+                        </tr>
+                        <tr>
+                            <td>Gizi Kurang</td>
+                            <td>85</td>
+                            <td>6.8%</td>
+                            <td style="color: var(--success);">↓ Menurun 3%</td>
+                            <td><button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Detail</button></td>
+                        </tr>
+                        <tr>
+                            <td>Gizi Buruk</td>
+                            <td>10</td>
+                            <td>0.8%</td>
+                            <td style="color: var(--success);">↓ Menurun 2%</td>
+                            <td><button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Detail</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../../js/pages/status-kesehatan.js"></script>
+</body>
+</html>

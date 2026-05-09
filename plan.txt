@@ -1,0 +1,27 @@
+📁 project-sipagi/
+│
+├── 📄 index.html          (Wadah utama yang sudah bersih)
+├── 📄 style.css           (Berisi seluruh kode dari tag <style> milikmu)
+│
+└── 📁 js/
+    ├── 📄 main.js         (Entry point & pengatur routing perpindahan halaman)
+    │
+    ├── 📁 components/     (Elemen UI statis/tetap)
+    │   ├── 📄 Sidebar.js  (Menu samping kiri)
+    │   ├── 📄 Topbar.js   (Navigasi atas, breadcrumb, notifikasi)
+    │   └── 📄 ScanModal.js(Popup hasil scan gizi)
+    │
+    └── 📁 pages/          (Konten spesifik untuk tiap menu)
+        ├── 📄 Dashboard.js       (id="dashboard")
+        ├── 📄 ProgramMBG.js      (id="program-mbg")
+        ├── 📄 Sekolah.js         (id="sekolah")
+        ├── 📄 Penerima.js        (id="penerima")
+        ├── 📄 Distribusi.js      (id="distribusi")
+        ├── 📄 Kualitas.js        (id="kualitas")
+        ├── 📄 MenuHarian.js      (id="menu-harian")
+        ├── 📄 StatusKesehatan.js (id="status-kesehatan")
+        ├── 📄 LaporanHarian.js   (id="laporan-harian")
+        ├── 📄 AnalisisData.js    (id="analisis-data")
+        └── 📄 ExportData.js      (id="export-data")
+
+api_groq: [removed - store secrets in environment variables]

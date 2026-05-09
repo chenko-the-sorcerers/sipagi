@@ -1,0 +1,2560 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIPAGI - Dashboard MBG Lengkap</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+    <style>
+        :root {
+            --primary-blue: #0056B3;
+            --secondary-blue: #3182CE;
+            --light-blue: #EBF5FF;
+            --dark-blue: #003D82;
+            --success: #059669;
+            --success-light: #D1FAE5;
+            --warning: #F59E0B;
+            --warning-light: #FEF3C7;
+            --danger: #DC2626;
+            --danger-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --bg-light: #F8FAFC;
+            --text-dark: #1E293B;
+            --text-gray: #64748B;
+            --white: #FFFFFF;
+            --border: #E2E8F0;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--white);
+            border-right: 2px solid var(--border);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: var(--primary-blue);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: var(--white);
+        }
+
+        .sidebar-logo h1 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: var(--primary-blue);
+        }
+
+        .sidebar-logo p {
+            font-size: 0.7rem;
+            color: var(--text-gray);
+            font-weight: 600;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem;
+            background: var(--bg-light);
+            border-radius: 10px;
+            margin-top: 0.5rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .user-details h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .user-details p {
+            font-size: 0.75rem;
+            color: var(--text-gray);
+        }
+
+        .sidebar-nav {
+            padding: 1.5rem 1rem;
+        }
+
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-section-title {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 0.75rem;
+            color: var(--text-gray);
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+        }
+
+        .nav-item:hover {
+            background: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        .nav-item.active {
+            background: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .nav-item i {
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--danger);
+            color: var(--white);
+            padding: 0.125rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background: var(--white);
+            border-bottom: 2px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .topbar-left h2 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--dark-blue);
+        }
+
+        .breadcrumb {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            margin-top: 0.25rem;
+        }
+
+        .topbar-right {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--bg-light);
+            padding: 0.625rem 1rem;
+            border-radius: 8px;
+            border: 2px solid var(--border);
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 250px;
+            font-size: 0.9rem;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-light);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .icon-btn:hover {
+            background: var(--primary-blue);
+            border-color: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--danger);
+            color: var(--white);
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            font-size: 0.65rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+            padding: 2rem;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            border-color: var(--primary-blue);
+            transform: translateY(-4px);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-icon.blue {
+            background: var(--light-blue);
+            color: var(--primary-blue);
+        }
+
+        .stat-icon.green {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .stat-icon.orange {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .stat-icon.purple {
+            background: var(--purple-light);
+            color: var(--purple);
+        }
+
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+        }
+
+        .stat-trend.up {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .stat-trend.down {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+
+        .stat-value {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 2rem;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            font-weight: 600;
+        }
+
+        /* Charts Section */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: var(--white);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-header h3 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: var(--text-dark);
+        }
+
+        .chart-filter {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--border);
+            background: var(--white);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary-blue);
+            border-color: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .chart-placeholder {
+            height: 300px;
+            background: var(--bg-light);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-gray);
+            font-weight: 600;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        /* Progress Bars */
+        .progress-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .progress-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .progress-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .progress-value {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: var(--bg-light);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-blue);
+            border-radius: 5px;
+            transition: width 0.6s ease;
+        }
+
+        .progress-fill.success {
+            background: var(--success);
+        }
+
+        .progress-fill.warning {
+            background: var(--warning);
+        }
+
+        .progress-fill.danger {
+            background: var(--danger);
+        }
+
+        /* Tables */
+        .table-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .table-card {
+            background: var(--white);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .table-card-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-card-header h3 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: var(--text-dark);
+        }
+
+        .view-all-link {
+            font-size: 0.85rem;
+            color: var(--primary-blue);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .view-all-link:hover {
+            text-decoration: underline;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table thead {
+            background: var(--bg-light);
+        }
+
+        .data-table th {
+            padding: 0.875rem 1.5rem;
+            text-align: left;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:hover {
+            background: var(--bg-light);
+        }
+
+        .school-name {
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .location-text {
+            font-size: 0.8rem;
+            color: var(--text-gray);
+            margin-top: 0.125rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.375rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .status-badge.success {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .status-badge.warning {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .status-badge.danger {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+
+        .status-badge.info {
+            background: var(--light-blue);
+            color: var(--primary-blue);
+        }
+
+        /* Activity Feed */
+        .activity-feed {
+            background: var(--white);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .activity-feed h3 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .activity-content h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-content p {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            line-height: 1.5;
+        }
+
+        .activity-time {
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            margin-top: 0.375rem;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            background: var(--white);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .quick-actions h3 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: var(--text-dark);
+            margin-bottom: 1.25rem;
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.25rem;
+            background: var(--bg-light);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-blue);
+            border-color: var(--primary-blue);
+            transform: translateY(-2px);
+        }
+
+        .action-btn:hover .action-icon {
+            color: var(--white);
+        }
+
+        .action-btn:hover .action-label {
+            color: var(--white);
+        }
+
+        .action-icon {
+            font-size: 2rem;
+            color: var(--primary-blue);
+            transition: all 0.2s;
+        }
+
+        .action-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            transition: all 0.2s;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--dark-blue);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--border);
+            color: var(--text-dark);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1rem;
+        }
+
+        .modal-header h2 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--dark-blue);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-gray);
+        }
+
+        .close-btn:hover {
+            color: var(--text-dark);
+        }
+
+        /* Nutrition Details */
+        .nutrition-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .nutrition-card {
+            background: var(--bg-light);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .nutrition-card h4 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            color: var(--dark-blue);
+            margin-bottom: 1rem;
+        }
+
+        .nutrition-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nutrition-item:last-child {
+            border-bottom: none;
+        }
+
+        .nutrition-label {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .nutrition-value {
+            font-size: 0.9rem;
+            color: var(--primary-blue);
+            font-weight: 700;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .action-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nutrition-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <div class="logo-icon">S</div>
+                <div>
+                    <h1>SIPAGI</h1>
+                    <p>Dashboard MBG</p>
+                </div>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">AD</div>
+                <div class="user-details">
+                    <h4>Admin Daerah</h4>
+                    <p>Kota Depok</p>
+                </div>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">Menu Utama</div>
+                <button class="nav-item active" onclick="showSection('dashboard')">
+                    <i class="fi fi-rr-apps"></i>
+                    Dashboard
+                </button>
+                <button class="nav-item" onclick="showSection('program-mbg')">
+                    <i class="fi fi-rr-utensils"></i>
+                    Program MBG
+                </button>
+                <button class="nav-item" onclick="showSection('sekolah')">
+                    <i class="fi fi-rr-school"></i>
+                    Sekolah Penerima
+                </button>
+                <button class="nav-item" onclick="showSection('penerima')">
+                    <i class="fi fi-rr-users"></i>
+                    Penerima Manfaat
+                    <span class="nav-badge">1,245</span>
+                </button>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Monitoring</div>
+                <button class="nav-item" onclick="showSection('distribusi')">
+                    <i class="fi fi-rr-chart-histogram"></i>
+                    Distribusi Pangan
+                </button>
+                <button class="nav-item" onclick="showSection('kualitas')">
+                    <i class="fi fi-rr-apple-whole"></i>
+                    Kualitas Gizi
+                </button>
+                <button class="nav-item" onclick="showSection('menu-harian')">
+                    <i class="fi fi-rr-plate"></i>
+                    Menu Harian
+                </button>
+                <button class="nav-item" onclick="showSection('status-kesehatan')">
+                    <i class="fi fi-rr-stethoscope"></i>
+                    Status Kesehatan
+                </button>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Laporan</div>
+                <button class="nav-item" onclick="showSection('laporan-harian')">
+                    <i class="fi fi-rr-document"></i>
+                    Laporan Harian
+                </button>
+                <button class="nav-item" onclick="showSection('analisis-data')">
+                    <i class="fi fi-rr-chart-line-up"></i>
+                    Analisis Data
+                </button>
+                <button class="nav-item" onclick="showSection('export-data')">
+                    <i class="fi fi-rr-file-export"></i>
+                    Export Data
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="topbar">
+            <div class="topbar-left">
+                <h2 id="page-title">Dashboard</h2>
+                <div class="breadcrumb">
+                    <span>Home</span>
+                    <span>/</span>
+                    <span id="breadcrumb-text">Dashboard</span>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <div class="search-box">
+                    <i class="fi fi-rr-search"></i>
+                    <input type="text" placeholder="Cari sekolah, menu, atau laporan...">
+                </div>
+                <button class="icon-btn">
+                    <i class="fi fi-rr-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <button class="icon-btn">
+                    <i class="fi fi-rr-user"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="content-section active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon blue"><i class="fi fi-rr-school"></i></div>
+                        <div class="stat-trend up">
+                            <i class="fi fi-rr-arrow-up"></i>
+                            <span>12%</span>
+                        </div>
+                    </div>
+                    <div class="stat-value">156</div>
+                    <div class="stat-label">Total Sekolah</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon green"><i class="fi fi-rr-users"></i></div>
+                        <div class="stat-trend up">
+                            <i class="fi fi-rr-arrow-up"></i>
+                            <span>8%</span>
+                        </div>
+                    </div>
+                    <div class="stat-value">1,245</div>
+                    <div class="stat-label">Penerima Manfaat</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon orange"><i class="fi fi-rr-box"></i></div>
+                        <div class="stat-trend up">
+                            <i class="fi fi-rr-arrow-up"></i>
+                            <span>24%</span>
+                        </div>
+                    </div>
+                    <div class="stat-value">8,420</div>
+                    <div class="stat-label">Porsi Terdistribusi</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon purple"><i class="fi fi-rr-star"></i></div>
+                        <div class="stat-trend up">
+                            <i class="fi fi-rr-arrow-up"></i>
+                            <span>3%</span>
+                        </div>
+                    </div>
+                    <div class="stat-value">95.8%</div>
+                    <div class="stat-label">Target Pemenuhan Gizi</div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h3>Aksi Cepat</h3>
+                <div class="action-grid">
+                    <a href="#" class="action-btn">
+                        <i class="fi fi-rr-plus-circle action-icon"></i>
+                        <span class="action-label">Tambah Sekolah</span>
+                    </a>
+                    <a href="#" class="action-btn" onclick="openScanModal(); return false;">
+                        <i class="fi fi-rr-camera action-icon"></i>
+                        <span class="action-label">Scan Gizi</span>
+                    </a>
+                    <a href="#" class="action-btn">
+                        <i class="fi fi-rr-plate action-icon"></i>
+                        <span class="action-label">Input Menu</span>
+                    </a>
+                    <a href="#" class="action-btn">
+                        <i class="fi fi-rr-document action-icon"></i>
+                        <span class="action-label">Buat Laporan</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Distribusi Pangan Harian</h3>
+                        <div class="chart-filter">
+                            <button class="filter-btn active">7 Hari</button>
+                            <button class="filter-btn">30 Hari</button>
+                            <button class="filter-btn">3 Bulan</button>
+                        </div>
+                    </div>
+                    <div class="chart-placeholder">
+                        📊 Grafik Distribusi Pangan (Line Chart)
+                        <br><small>Data 7 hari terakhir menunjukkan tren peningkatan</small>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Target Pemenuhan Gizi</h3>
+                    </div>
+                    <div class="progress-list">
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-label">Protein</span>
+                                <span class="progress-value">92%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill success" style="width: 92%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-label">Karbohidrat</span>
+                                <span class="progress-value">96%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill success" style="width: 96%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-label">Lemak Sehat</span>
+                                <span class="progress-value">88%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill success" style="width: 88%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-label">Serat</span>
+                                <span class="progress-value">78%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill warning" style="width: 78%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-label">Vitamin & Mineral</span>
+                                <span class="progress-value">94%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill success" style="width: 94%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tables Section -->
+            <div class="table-section">
+                <!-- Top Schools -->
+                <div class="table-card">
+                    <div class="table-card-header">
+                        <h3>Sekolah dengan Kinerja Terbaik</h3>
+                        <a href="#" class="view-all-link">Lihat Semua →</a>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Sekolah</th>
+                                <th>Penerima</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="school-name">SDN 01 Depok</div>
+                                    <div class="location-text">Depok, Yogyakarta</div>
+                                </td>
+                                <td><strong>485</strong> siswa</td>
+                                <td><span class="status-badge success">Sangat Baik</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="school-name">SDN 05 Caturtunggal</div>
+                                    <div class="location-text">Depok, Yogyakarta</div>
+                                </td>
+                                <td><strong>412</strong> siswa</td>
+                                <td><span class="status-badge success">Sangat Baik</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="school-name">SDN 02 Condongcatur</div>
+                                    <div class="location-text">Depok, Yogyakarta</div>
+                                </td>
+                                <td><strong>395</strong> siswa</td>
+                                <td><span class="status-badge success">Sangat Baik</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="school-name">SDN Maguwoharjo 1</div>
+                                    <div class="location-text">Depok, Yogyakarta</div>
+                                </td>
+                                <td><strong>368</strong> siswa</td>
+                                <td><span class="status-badge info">Baik</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Recent Activities -->
+                <div class="activity-feed">
+                    <h3>Aktivitas Terbaru</h3>
+                    <div class="activity-item">
+                        <div class="activity-icon" style="background: var(--success-light); color: var(--success);">
+                            <i class="fi fi-rr-check"></i>
+                        </div>
+                        <div class="activity-content">
+                            <h4>Distribusi Berhasil</h4>
+                            <p>SDN 01 Depok menerima 485 porsi makanan bergizi</p>
+                            <div class="activity-time">2 jam yang lalu</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon" style="background: var(--light-blue); color: var(--primary-blue);">
+                            <i class="fi fi-rr-plate"></i>
+                        </div>
+                        <div class="activity-content">
+                            <h4>Menu Baru Ditambahkan</h4>
+                            <p>Menu "Nasi Ayam Suwir + Sayur Asem" telah disetujui</p>
+                            <div class="activity-time">3 jam yang lalu</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon" style="background: var(--warning-light); color: var(--warning);">
+                            <i class="fi fi-rr-exclamation"></i>
+                        </div>
+                        <div class="activity-content">
+                            <h4>Perlu Perhatian</h4>
+                            <p>SDN 03 Terban: Stok bahan pangan perlu direstock</p>
+                            <div class="activity-time">5 jam yang lalu</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon" style="background: var(--purple-light); color: var(--purple);">
+                            <i class="fi fi-rr-document"></i>
+                        </div>
+                        <div class="activity-content">
+                            <h4>Laporan Bulanan</h4>
+                            <p>Laporan bulan Maret 2026 siap untuk diunduh</p>
+                            <div class="activity-time">1 hari yang lalu</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Charts -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Distribusi per Kategori Makanan</h3>
+                    </div>
+                    <div class="chart-placeholder">
+                        🍱 Donut Chart
+                        <br><small>Protein 35% | Karbohidrat 45% | Sayur 15% | Buah 5%</small>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Tingkat Kepuasan Penerima</h3>
+                    </div>
+                    <div class="chart-placeholder">
+                        ⭐ Rating Chart
+                        <br><small>Rata-rata 4.6/5.0 dari 1,245 siswa</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Table -->
+            <div class="table-card" style="margin-bottom: 2rem;">
+                <div class="table-card-header">
+                    <h3>Monitoring Harian Distribusi</h3>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <button class="btn btn-outline">
+                            <i class="fi fi-rr-filter"></i>
+                            Filter
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="fi fi-rr-download"></i>
+                            Export
+                        </button>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Sekolah</th>
+                            <th>Menu</th>
+                            <th>Porsi</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>20 Apr 2026</td>
+                            <td>SDN 01 Depok</td>
+                            <td>Nasi Ayam + Sayur Bayam</td>
+                            <td>485</td>
+                            <td><span class="status-badge success">Terkirim</span></td>
+                        </tr>
+                        <tr>
+                            <td>20 Apr 2026</td>
+                            <td>SDN 05 Caturtunggal</td>
+                            <td>Nasi Ikan + Buah Pisang</td>
+                            <td>412</td>
+                            <td><span class="status-badge success">Terkirim</span></td>
+                        </tr>
+                        <tr>
+                            <td>20 Apr 2026</td>
+                            <td>SDN 02 Condongcatur</td>
+                            <td>Nasi Daging + Sayur Buncis</td>
+                            <td>395</td>
+                            <td><span class="status-badge warning">Proses</span></td>
+                        </tr>
+                        <tr>
+                            <td>20 Apr 2026</td>
+                            <td>SDN Maguwoharjo 1</td>
+                            <td>Nasi Telur + Sayur Asem</td>
+                            <td>368</td>
+                            <td><span class="status-badge success">Terkirim</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Program MBG Section -->
+        <div id="program-mbg" class="content-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="fi fi-rr-book-alt"></i></div>
+                    <div class="stat-value">156</div>
+                    <div class="stat-label">Sekolah Terdaftar</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="fi fi-rr-users"></i></div>
+                    <div class="stat-value">1,245</div>
+                    <div class="stat-label">Siswa Penerima</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange"><i class="fi fi-rr-calendar"></i></div>
+                    <div class="stat-value">180</div>
+                    <div class="stat-label">Hari Operasional</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon purple"><i class="fi fi-rr-money"></i></div>
+                    <div class="stat-value">Rp 1.2M</div>
+                    <div class="stat-label">Anggaran Terpakai</div>
+                </div>
+            </div>
+
+            <div class="table-card" style="margin-bottom: 2rem;">
+                <div class="table-card-header">
+                    <h3>Rincian Program MBG</h3>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Aspek Program</th>
+                            <th>Target</th>
+                            <th>Realisasi</th>
+                            <th>Persentase</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cakupan Sekolah</td>
+                            <td>200 sekolah</td>
+                            <td>156 sekolah</td>
+                            <td><span class="status-badge success">78%</span></td>
+                        </tr>
+                        <tr>
+                            <td>Penerima Manfaat</td>
+                            <td>2,000 siswa</td>
+                            <td>1,245 siswa</td>
+                            <td><span class="status-badge success">62%</span></td>
+                        </tr>
+                        <tr>
+                            <td>Hari Operasional</td>
+                            <td>180 hari</td>
+                            <td>165 hari</td>
+                            <td><span class="status-badge warning">92%</span></td>
+                        </tr>
+                        <tr>
+                            <td>Pemenuhan Gizi</td>
+                            <td>100%</td>
+                            <td>95.8%</td>
+                            <td><span class="status-badge success">96%</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Alokasi Anggaran Program</h3>
+                    </div>
+                    <div class="chart-placeholder">
+                        💰 Pie Chart
+                        <br><small>Pangan 60% | Operasional 25% | Monitoring 15%</small>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Tren Partisipasi Sekolah</h3>
+                    </div>
+                    <div class="chart-placeholder">
+                        📈 Area Chart
+                        <br><small>Peningkatan konsisten setiap bulan</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sekolah Section -->
+        <div id="sekolah" class="content-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="fi fi-rr-school"></i></div>
+                    <div class="stat-value">156</div>
+                    <div class="stat-label">Total Sekolah</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="fi fi-rr-check-circle"></i></div>
+                    <div class="stat-value">145</div>
+                    <div class="stat-label">Aktif</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange"><i class="fi fi-rr-clock"></i></div>
+                    <div class="stat-value">8</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon purple"><i class="fi fi-rr-users"></i></div>
+                    <div class="stat-value">1,245</div>
+                    <div class="stat-label">Total Siswa</div>
+                </div>
+            </div>
+
+            <div class="table-card" style="margin-bottom: 2rem;">
+                <div class="table-card-header">
+                    <h3>Daftar Sekolah Penerima</h3>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <button class="btn btn-outline">
+                            <i class="fi fi-rr-filter"></i>
+                            Filter
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="fi fi-rr-plus"></i>
+                            Tambah Sekolah
+                        </button>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Nama Sekolah</th>
+                            <th>Lokasi</th>
+                            <th>Jumlah Siswa</th>
+                            <th>Akreditasi</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="school-name">SDN 01 Depok</div>
+                                <div class="location-text">Jl. Raya Depok No. 1</div>
+                            </td>
+                            <td>Sleman, DIY</td>
+                            <td><strong>485</strong></td>
+                            <td>A</td>
+                            <td><span class="status-badge success">Aktif</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="school-name">SDN 05 Caturtunggal</div>
+                                <div class="location-text">Jl. Caturtunggal No. 5</div>
+                            </td>
+                            <td>Sleman, DIY</td>
+                            <td><strong>412</strong></td>
+                            <td>A</td>
+                            <td><span class="status-badge success">Aktif</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="school-name">SDN 02 Condongcatur</div>
+                                <div class="location-text">Jl. Condongcatur No. 2</div>
+                            </td>
+                            <td>Sleman, DIY</td>
+                            <td><strong>348</strong></td>
+                            <td>B</td>
+                            <td><span class="status-badge success">Aktif</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="school-name">SDN Maguwoharjo 1</div>
+                                <div class="location-text">Jl. Maguwoharjo No. 1</div>
+                            </td>
+                            <td>Sleman, DIY</td>
+                            <td><strong>368</strong></td>
+                            <td>B</td>
+                            <td><span class="status-badge success">Aktif</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="school-name">SDN 03 Terban</div>
+                                <div class="location-text">Jl. Terban No. 3</div>
+                            </td>
+                            <td>Yogyakarta, DIY</td>
+                            <td><strong>320</strong></td>
+                            <td>B</td>
+                            <td><span class="status-badge warning">Pending</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Penerima Section -->
+        <div id="penerima" class="content-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="fi fi-rr-users"></i></div>
+                    <div class="stat-value">1,245</div>
+                    <div class="stat-label">Total Siswa Penerima</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="fi fi-rr-male"></i></div>
+                    <div class="stat-value">612</div>
+                    <div class="stat-label">Laki-laki</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange"><i class="fi fi-rr-female"></i></div>
+                    <div class="stat-value">633</div>
+                    <div class="stat-label">Perempuan</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon purple"><i class="fi fi-rr-star"></i></div>
+                    <div class="stat-value">98.5%</div>
+                    <div class="stat-label">Tingkat Kehadiran</div>
+                </div>
+            </div>
+
+            <div class="table-card" style="margin-bottom: 2rem;">
+                <div class="table-card-header">
+                    <h3>Demografi Penerima Manfaat</h3>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Kategori</th>
+                            <th>Jumlah</th>
+                            <th>Persentase</th>
+                            <th>Trend</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Kelas 1-3</td>
+                            <td>420</td>
+                            <td>33.7%</td>
+                            <td style="color: var(--success);">↑ Stabil</td>
+                        </tr>
+                        <tr>
+                            <td>Kelas 4-6</td>
+                            <td>825</td>
+                            <td>66.3%</td>
+                            <td style="color: var(--success);">↑ Meningkat</td>
+                        </tr>
+                        <tr>
+                            <td>Dari Keluarga Kurang Mampu</td>
+                            <td>1,050</td>
+                            <td>84.3%</td>
+                            <td style="color: var(--success);">↑ Meningkat</td>
+                        </tr>
+                        <tr>
+                            <td>Dengan Kondisi Khusus</td>
+                            <td>95</td>
+                            <td>7.6%</td>
+                            <td style="color: var(--success);">↓ Menurun</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Distribusi Section -->
+        <div id="distribusi" class="content-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon blue"><i class="fi fi-rr-truck-side"></i></div>
+                        <div class="stat-trend up">
+                            <i class="fi fi-rr-arrow-up"></i>
+                            <span>5%</span>
+                        </div>
+                    </div>
+                    <div class="stat-value">24</div>
+                    <div class="stat-label">Armada Aktif</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon green"><i class="fi fi-rr-box"></i></div>
+                        <div class="stat-trend up">
+                            <i class="fi fi-rr-arrow-up"></i>
+                            <span>12%</span>
+                        </div>
+                    </div>
+                    <div class="stat-value">8,420</div>
+                    <div class="stat-label">Porsi Terdistribusi</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon orange"><i class="fi fi-rr-clock"></i></div>
+                        <div class="stat-trend up">
+                            <i class="fi fi-rr-arrow-down"></i>
+                            <span>8%</span>
+                        </div>
+                    </div>
+                    <div class="stat-value">42 min</div>
+                    <div class="stat-label">Rata-rata Waktu</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon purple"><i class="fi fi-rr-check-circle"></i></div>
+                        <div class="stat-trend up">
+                            <i class="fi fi-rr-arrow-up"></i>
+                            <span>3%</span>
+                        </div>
+                    </div>
+                    <div class="stat-value">99.2%</div>
+                    <div class="stat-label">Tingkat Ketepatan</div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Rute Distribusi Harian</h3>
+                        <div class="chart-filter">
+                            <button class="filter-btn active">Hari Ini</button>
+                            <button class="filter-btn">Minggu Ini</button>
+                            <button class="filter-btn">Bulan Ini</button>
+                        </div>
+                    </div>
+                    <div class="chart-placeholder">
+                        🗺️ Map Chart
+                        <br><small>24 rute aktif dengan 156 lokasi pengiriman</small>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Status Pengiriman</h3>
+                    </div>
+                    <div class="progress-list">
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-label">Terkirim</span>
+                                <span class="progress-value">145 sekolah</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill success" style="width: 93%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-label">Dalam Perjalanan</span>
+                                <span class="progress-value">8 sekolah</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill warning" style="width: 5%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-label">Tertunda</span>
+                                <span class="progress-value">3 sekolah</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill danger" style="width: 2%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-card" style="margin-bottom: 2rem;">
+                <div class="table-card-header">
+                    <h3>Detail Pengiriman Hari Ini</h3>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Rute</th>
+                            <th>Sekolah</th>
+                            <th>Porsi</th>
+                            <th>Waktu Kirim</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Rute 01</td>
+                            <td>SDN 01 Depok</td>
+                            <td>485</td>
+                            <td>08:30 - 08:45</td>
+                            <td><span class="status-badge success">Terkirim</span></td>
+                        </tr>
+                        <tr>
+                            <td>Rute 02</td>
+                            <td>SDN 05 Caturtunggal</td>
+                            <td>412</td>
+                            <td>08:50 - 09:05</td>
+                            <td><span class="status-badge success">Terkirim</span></td>
+                        </tr>
+                        <tr>
+                            <td>Rute 03</td>
+                            <td>SDN 02 Condongcatur</td>
+                            <td>348</td>
+                            <td>09:10 - 09:25</td>
+                            <td><span class="status-badge warning">Dalam Perjalanan</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Kualitas Section -->
+        <div id="kualitas" class="content-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="fi fi-rr-apple-whole"></i></div>
+                    <div class="stat-value">95.8%</div>
+                    <div class="stat-label">Pemenuhan Target Gizi</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="fi fi-rr-check-circle"></i></div>
+                    <div class="stat-value">5/5</div>
+                    <div class="stat-label">Nutrisi Terpenuhi</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange"><i class="fi fi-rr-test-tube"></i></div>
+                    <div class="stat-value">156</div>
+                    <div class="stat-label">Sampel Diperiksa</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon purple"><i class="fi fi-rr-star"></i></div>
+                    <div class="stat-value">4.8/5</div>
+                    <div class="stat-label">Rating Kualitas</div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Target Pemenuhan Gizi Harian</h3>
+                    </div>
+                    <div class="progress-list">
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-label">Protein (Ayam/Ikan/Daging)</span>
+                                <span class="progress-value">92%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill success" style="width: 92%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-label">Karbohidrat (Nasi/Roti)</span>
+                                <span class="progress-value">96%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill success" style="width: 96%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-label">Lemak Sehat</span>
+                                <span class="progress-value">88%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill success" style="width: 88%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-label">Serat (Sayur & Buah)</span>
+                                <span class="progress-value">78%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill warning" style="width: 78%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-label">Vitamin & Mineral</span>
+                                <span class="progress-value">94%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill success" style="width: 94%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Standar Kalori Harian</h3>
+                    </div>
+                    <div class="chart-placeholder">
+                        🔥 Kalori Chart
+                        <br><small>Target: 2,000 kkal/hari</small>
+                        <br><small>Realisasi: 1,910 kkal/hari (95.5%)</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-card" style="margin-bottom: 2rem;">
+                <div class="table-card-header">
+                    <h3>Laporan Kualitas Gizi per Sekolah</h3>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Sekolah</th>
+                            <th>Protein</th>
+                            <th>Karbohidrat</th>
+                            <th>Lemak</th>
+                            <th>Serat</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>SDN 01 Depok</td>
+                            <td>92%</td>
+                            <td>96%</td>
+                            <td>88%</td>
+                            <td>80%</td>
+                            <td><span class="status-badge success">Baik</span></td>
+                        </tr>
+                        <tr>
+                            <td>SDN 05 Caturtunggal</td>
+                            <td>90%</td>
+                            <td>95%</td>
+                            <td>86%</td>
+                            <td>76%</td>
+                            <td><span class="status-badge success">Baik</span></td>
+                        </tr>
+                        <tr>
+                            <td>SDN 02 Condongcatur</td>
+                            <td>94%</td>
+                            <td>97%</td>
+                            <td>90%</td>
+                            <td>78%</td>
+                            <td><span class="status-badge success">Sangat Baik</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Menu Harian Section -->
+        <div id="menu-harian" class="content-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="fi fi-rr-plate"></i></div>
+                    <div class="stat-value">156</div>
+                    <div class="stat-label">Menu Tersedia</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="fi fi-rr-check-circle"></i></div>
+                    <div class="stat-value">145</div>
+                    <div class="stat-label">Menu Disetujui</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange"><i class="fi fi-rr-clock"></i></div>
+                    <div class="stat-value">8</div>
+                    <div class="stat-label">Menunggu Review</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon purple"><i class="fi fi-rr-star"></i></div>
+                    <div class="stat-value">4.7/5</div>
+                    <div class="stat-label">Rating Menu</div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Menu Minggu Ini (20-24 April 2026)</h3>
+                    </div>
+                    <div style="padding: 1rem;">
+                        <div class="menu-item" style="border-bottom: 1px solid var(--border); padding: 0.75rem 0;">
+                            <span style="font-weight: 700;">Senin, 20 April</span>
+                        </div>
+                        <div class="menu-item" style="padding: 0.5rem 0; font-size: 0.9rem;">
+                            <span>Nasi Putih + Ayam Goreng Lengkuas + Sayur Bayam + Pisang Ambon</span>
+                        </div>
+                        <div class="menu-item" style="border-bottom: 1px solid var(--border); padding: 0.75rem 0;">
+                            <span style="font-weight: 700;">Selasa, 21 April</span>
+                        </div>
+                        <div class="menu-item" style="padding: 0.5rem 0; font-size: 0.9rem;">
+                            <span>Nasi Kuning + Telur Dadar + Tumis Buncis + Jeruk</span>
+                        </div>
+                        <div class="menu-item" style="border-bottom: 1px solid var(--border); padding: 0.75rem 0;">
+                            <span style="font-weight: 700;">Rabu, 22 April</span>
+                        </div>
+                        <div class="menu-item" style="padding: 0.5rem 0; font-size: 0.9rem;">
+                            <span>Nasi Putih + Ikan Goreng + Sayur Asem + Pepaya</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Kategori Menu Terpopuler</h3>
+                    </div>
+                    <div class="chart-placeholder">
+                        🍽️ Category Chart
+                        <br><small>Nasi Kuning 25% | Ayam 30% | Ikan 20% | Telur 15% | Lainnya 10%</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-card" style="margin-bottom: 2rem;">
+                <div class="table-card-header">
+                    <h3>Daftar Menu Disetujui</h3>
+                    <button class="btn btn-primary">
+                        <i class="fi fi-rr-plus"></i>
+                        Tambah Menu
+                    </button>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Menu</th>
+                            <th>Bahan Utama</th>
+                            <th>Kalori</th>
+                            <th>Tanggal Disetujui</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Nasi Ayam Suwir + Sayur Asem</td>
+                            <td>Nasi, Ayam, Sayuran</td>
+                            <td>450 kkal</td>
+                            <td>15 Apr 2026</td>
+                            <td><span class="status-badge success">Aktif</span></td>
+                        </tr>
+                        <tr>
+                            <td>Nasi Ikan + Buah Pisang</td>
+                            <td>Nasi, Ikan, Pisang</td>
+                            <td>420 kkal</td>
+                            <td>14 Apr 2026</td>
+                            <td><span class="status-badge success">Aktif</span></td>
+                        </tr>
+                        <tr>
+                            <td>Nasi Daging + Sayur Buncis</td>
+                            <td>Nasi, Daging, Buncis</td>
+                            <td>480 kkal</td>
+                            <td>13 Apr 2026</td>
+                            <td><span class="status-badge success">Aktif</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Status Kesehatan Section -->
+        <div id="status-kesehatan" class="content-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon green"><i class="fi fi-rr-heart"></i></div>
+                        <div class="stat-trend up">
+                            <i class="fi fi-rr-arrow-up"></i>
+                            <span>5%</span>
+                        </div>
+                    </div>
+                    <div class="stat-value">1,150</div>
+                    <div class="stat-label">Gizi Baik</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon orange"><i class="fi fi-rr-exclamation"></i></div>
+                        <div class="stat-trend down">
+                            <i class="fi fi-rr-arrow-down"></i>
+                            <span>3%</span>
+                        </div>
+                    </div>
+                    <div class="stat-value">85</div>
+                    <div class="stat-label">Gizi Kurang</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon danger" style="background: var(--danger-light); color: var(--danger);"><i class="fi fi-rr-alert"></i></div>
+                        <div class="stat-trend down">
+                            <i class="fi fi-rr-arrow-down"></i>
+                            <span>2%</span>
+                        </div>
+                    </div>
+                    <div class="stat-value">10</div>
+                    <div class="stat-label">Gizi Buruk</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon purple"><i class="fi fi-rr-stethoscope"></i></div>
+                        <div class="stat-trend up">
+                            <i class="fi fi-rr-arrow-up"></i>
+                            <span>8%</span>
+                        </div>
+                    </div>
+                    <div class="stat-value">92.4%</div>
+                    <div class="stat-label">Kondisi Sehat</div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Distribusi Status Gizi</h3>
+                    </div>
+                    <div class="progress-list">
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-label">Gizi Baik</span>
+                                <span class="progress-value">1,150 siswa (92.4%)</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill success" style="width: 92.4%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-label">Gizi Kurang</span>
+                                <span class="progress-value">85 siswa (6.8%)</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill warning" style="width: 6.8%"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-label">Gizi Buruk</span>
+                                <span class="progress-value">10 siswa (0.8%)</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill danger" style="width: 0.8%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Tren Kesehatan 6 Bulan</h3>
+                    </div>
+                    <div class="chart-placeholder">
+                        📈 Line Chart
+                        <br><small>Peningkatan konsisten status gizi</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-card" style="margin-bottom: 2rem;">
+                <div class="table-card-header">
+                    <h3>Pemantauan Status Kesehatan Siswa</h3>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <button class="btn btn-outline">
+                            <i class="fi fi-rr-filter"></i>
+                            Filter
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="fi fi-rr-download"></i>
+                            Export
+                        </button>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Kategori</th>
+                            <th>Jumlah Siswa</th>
+                            <th>Persentase</th>
+                            <th>Tren</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Gizi Baik</td>
+                            <td>1,150</td>
+                            <td>92.4%</td>
+                            <td style="color: var(--success);">↑ Meningkat 5%</td>
+                            <td><button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Detail</button></td>
+                        </tr>
+                        <tr>
+                            <td>Gizi Kurang</td>
+                            <td>85</td>
+                            <td>6.8%</td>
+                            <td style="color: var(--success);">↓ Menurun 3%</td>
+                            <td><button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Detail</button></td>
+                        </tr>
+                        <tr>
+                            <td>Gizi Buruk</td>
+                            <td>10</td>
+                            <td>0.8%</td>
+                            <td style="color: var(--success);">↓ Menurun 2%</td>
+                            <td><button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Detail</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Laporan Harian Section -->
+        <div id="laporan-harian" class="content-section">
+            <div class="table-card" style="margin-bottom: 2rem;">
+                <div class="table-card-header">
+                    <h3>Laporan Harian Distribusi & Gizi</h3>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <button class="btn btn-outline">
+                            <i class="fi fi-rr-filter"></i>
+                            Filter Tanggal
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="fi fi-rr-download"></i>
+                            Download PDF
+                        </button>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Total Porsi</th>
+                            <th>Sekolah Terlayani</th>
+                            <th>Pemenuhan Gizi</th>
+                            <th>Catatan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>20 Apr 2026</td>
+                            <td>1,660</td>
+                            <td>4 sekolah</td>
+                            <td><span class="status-badge success">95.8%</span></td>
+                            <td>Distribusi lancar, semua sekolah terkirim tepat waktu</td>
+                        </tr>
+                        <tr>
+                            <td>19 Apr 2026</td>
+                            <td>1,645</td>
+                            <td>4 sekolah</td>
+                            <td><span class="status-badge success">94.2%</span></td>
+                            <td>1 rute tertunda 15 menit, namun tetap dalam standar</td>
+                        </tr>
+                        <tr>
+                            <td>18 Apr 2026</td>
+                            <td>1,620</td>
+                            <td>4 sekolah</td>
+                            <td><span class="status-badge success">96.1%</span></td>
+                            <td>Semua parameter terpenuhi dengan baik</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Analisis Data Section -->
+        <div id="analisis-data" class="content-section">
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Tren Penerima Manfaat 6 Bulan</h3>
+                    </div>
+                    <div class="chart-placeholder">
+                        📈 Area Chart
+                        <br><small>Pertumbuhan konsisten dari 800 menjadi 1,245 siswa</small>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Perbandingan Sekolah</h3>
+                    </div>
+                    <div class="chart-placeholder">
+                        📊 Bar Chart
+                        <br><small>Performa 4 sekolah terbaik</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-card" style="margin-bottom: 2rem;">
+                <div class="table-card-header">
+                    <h3>Analisis Kinerja Program</h3>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Indikator</th>
+                            <th>Target</th>
+                            <th>Realisasi</th>
+                            <th>Pencapaian</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cakupan Sekolah</td>
+                            <td>200</td>
+                            <td>156</td>
+                            <td>78%</td>
+                            <td><span class="status-badge warning">Perlu Ditingkatkan</span></td>
+                        </tr>
+                        <tr>
+                            <td>Penerima Manfaat</td>
+                            <td>2,000</td>
+                            <td>1,245</td>
+                            <td>62.3%</td>
+                            <td><span class="status-badge warning">Perlu Ditingkatkan</span></td>
+                        </tr>
+                        <tr>
+                            <td>Pemenuhan Gizi</td>
+                            <td>100%</td>
+                            <td>95.8%</td>
+                            <td>95.8%</td>
+                            <td><span class="status-badge success">Tercapai</span></td>
+                        </tr>
+                        <tr>
+                            <td>Tingkat Kepuasan</td>
+                            <td>90%</td>
+                            <td>95.8%</td>
+                            <td>106.4%</td>
+                            <td><span class="status-badge success">Melampaui Target</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Export Data Section -->
+        <div id="export-data" class="content-section">
+            <div class="quick-actions" style="margin-bottom: 2rem;">
+                <h3>Ekspor Data</h3>
+                <div class="action-grid">
+                    <a href="#" class="action-btn">
+                        <i class="fi fi-rr-file-csv action-icon"></i>
+                        <span class="action-label">Export CSV</span>
+                    </a>
+                    <a href="#" class="action-btn">
+                        <i class="fi fi-rr-file-excel action-icon"></i>
+                        <span class="action-label">Export Excel</span>
+                    </a>
+                    <a href="#" class="action-btn">
+                        <i class="fi fi-rr-file-pdf action-icon"></i>
+                        <span class="action-label">Export PDF</span>
+                    </a>
+                    <a href="#" class="action-btn">
+                        <i class="fi fi-rr-print action-icon"></i>
+                        <span class="action-label">Print Report</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="table-card-header">
+                    <h3>Data yang Dapat Diekspor</h3>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Jenis Data</th>
+                            <th>Jumlah Record</th>
+                            <th>Format Tersedia</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Data Sekolah Penerima</td>
+                            <td>156 sekolah</td>
+                            <td>CSV, Excel, PDF</td>
+                            <td><button class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Ekspor</button></td>
+                        </tr>
+                        <tr>
+                            <td>Data Penerima Manfaat</td>
+                            <td>1,245 siswa</td>
+                            <td>CSV, Excel, PDF</td>
+                            <td><button class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Ekspor</button></td>
+                        </tr>
+                        <tr>
+                            <td>Laporan Distribusi Harian</td>
+                            <td>165 hari</td>
+                            <td>CSV, Excel, PDF</td>
+                            <td><button class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Ekspor</button></td>
+                        </tr>
+                        <tr>
+                            <td>Laporan Kualitas Gizi</td>
+                            <td>156 sekolah</td>
+                            <td>CSV, Excel, PDF</td>
+                            <td><button class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Ekspor</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Scan Gizi Modal -->
+    <div id="scanModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Hasil Scan Gizi Makanan</h2>
+                <button class="close-btn" onclick="closeScanModal()">×</button>
+            </div>
+            
+            <div style="background: var(--bg-light); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                <h3 style="font-family: 'Outfit'; font-weight: 700; color: var(--dark-blue); margin-bottom: 1rem;">
+                    📸 Nasi Ayam Suwir + Sayur Asem
+                </h3>
+                <p style="color: var(--text-gray); margin-bottom: 1rem;">
+                    <strong>Waktu Scan:</strong> 20 April 2026, 08:30 WIB | <strong>Lokasi:</strong> SDN 01 Depok
+                </p>
+            </div>
+
+            <div class="nutrition-grid">
+                <div class="nutrition-card">
+                    <h4>📊 Informasi Umum</h4>
+                    <div class="nutrition-item">
+                        <span class="nutrition-label">Berat Porsi</span>
+                        <span class="nutrition-value">350g</span>
+                    </div>
+                    <div class="nutrition-item">
+                        <span class="nutrition-label">Total Kalori</span>
+                        <span class="nutrition-value">450 kkal</span>
+                    </div>
+                    <div class="nutrition-item">
+                        <span class="nutrition-label">Kategori</span>
+                        <span class="nutrition-value">Makanan Utama</span>
+                    </div>
+                    <div class="nutrition-item">
+                        <span class="nutrition-label">Status Gizi</span>
+                        <span class="nutrition-value" style="color: var(--success);">✓ Sesuai Standar</span>
+                    </div>
+                </div>
+
+                <div class="nutrition-card">
+                    <h4>🥗 Komposisi Bahan</h4>
+                    <div class="nutrition-item">
+                        <span class="nutrition-label">Nasi Putih</span>
+                        <span class="nutrition-value">200g</span>
+                    </div>
+                    <div class="nutrition-item">
+                        <span class="nutrition-label">Ayam Suwir</span>
+                        <span class="nutrition-value">80g</span>
+                    </div>
+                    <div class="nutrition-item">
+                        <span class="nutrition-label">Sayur Asem</span>
+                        <span class="nutrition-value">70g</span>
+                    </div>
+                </div>
+
+                <div class="nutrition-card">
+                    <h4>🔥 Kandungan Kalori & Makronutrien</h4>
+                    <div class="nutrition-item">
+                        <span class="nutrition-label">Protein</span>
+                        <span class="nutrition-value">18g (16%)</span>
+                    </div>
+                    <div class="nutrition-item">
+                        <span class="nutrition-label">Karbohidrat</span>
+                        <span class="nutrition-value">62g (55%)</span>
+                    </div>
+                    <div class="nutrition-item">
+                        <span class="nutrition-label">Lemak</span>
+                        <span class="nutrition-value">12g (24%)</span>
+                    </div>
+                    <div class="nutrition-item">
+                        <span class="nutrition-label">Serat</span>
+                        <span class="nutrition-value">3g</span>
+                    </div>
+                </div>
+
+                <div class="nutrition-card">
+                    <h4>💊 Vitamin & Mineral</h4>
+                    <div class="nutrition-item">
+                        <span class="nutrition-label">Vitamin A</span>
+                        <span class="nutrition-value">450 IU</span>
+                    </div>
+                    <div class="nutrition-item">
+                        <span class="nutrition-label">Vitamin C</span>
+                        <span class="nutrition-value">12mg</span>
+                    </div>
+                    <div class="nutrition-item">
+                        <span class="nutrition-label">Kalsium</span>
+                        <span class="nutrition-value">85mg</span>
+                    </div>
+                    <div class="nutrition-item">
+                        <span class="nutrition-label">Zat Besi</span>
+                        <span class="nutrition-value">2.5mg</span>
+                    </div>
+                </div>
+
+                <div class="nutrition-card">
+                    <h4>✅ Standar Pemenuhan Gizi</h4>
+                    <div class="nutrition-item">
+                        <span class="nutrition-label">Target Protein</span>
+                        <span class="nutrition-value">15-20g ✓</span>
+                    </div>
+                    <div class="nutrition-item">
+                        <span class="nutrition-label">Target Kalori</span>
+                        <span class="nutrition-value">400-500 kkal ✓</span>
+                    </div>
+                    <div class="nutrition-item">
+                        <span class="nutrition-label">Target Serat</span>
+                        <span class="nutrition-value">2-5g ✓</span>
+                    </div>
+                </div>
+
+                <div class="nutrition-card">
+                    <h4>📋 Rekomendasi & Catatan</h4>
+                    <div class="nutrition-item">
+                        <span class="nutrition-label">Tingkat Keseimbangan</span>
+                        <span class="nutrition-value" style="color: var(--success);">Seimbang</span>
+                    </div>
+                    <div class="nutrition-item">
+                        <span class="nutrition-label">Kelayakan Distribusi</span>
+                        <span class="nutrition-value" style="color: var(--success);">Layak</span>
+                    </div>
+                    <div class="nutrition-item">
+                        <span class="nutrition-label">Catatan</span>
+                        <span class="nutrition-value">Menu berkualitas tinggi, cocok untuk anak sekolah</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 1.5rem; padding: 1rem; background: var(--success-light); border-radius: 8px; border-left: 4px solid var(--success);">
+                <p style="color: var(--success); font-weight: 700;">
+                    ✓ HASIL SCAN: LOLOS STANDAR GIZI
+                </p>
+                <p style="color: var(--text-gray); font-size: 0.9rem; margin-top: 0.5rem;">
+                    Menu ini telah memenuhi semua standar nutrisi yang ditetapkan dan siap untuk didistribusikan kepada siswa penerima manfaat.
+                </p>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem; justify-content: flex-end;">
+                <button class="btn btn-outline" onclick="closeScanModal()">Tutup</button>
+                <button class="btn btn-primary">Setujui & Distribusikan</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show selected section
+            const activeSection = document.getElementById(sectionId);
+            if (activeSection) {
+                activeSection.classList.add('active');
+            }
+
+            // Update sidebar active state
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('onclick') && item.getAttribute('onclick').includes(sectionId)) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Update topbar title
+            const titles = {
+                'dashboard': 'Dashboard',
+                'program-mbg': 'Program MBG',
+                'sekolah': 'Sekolah Penerima',
+                'penerima': 'Penerima Manfaat',
+                'distribusi': 'Distribusi Pangan',
+                'kualitas': 'Kualitas Gizi',
+                'menu-harian': 'Menu Harian',
+                'status-kesehatan': 'Status Kesehatan',
+                'laporan-harian': 'Laporan Harian',
+                'analisis-data': 'Analisis Data',
+                'export-data': 'Export Data'
+            };
+            document.getElementById('page-title').innerText = titles[sectionId] || 'Dashboard';
+            document.getElementById('breadcrumb-text').innerText = titles[sectionId] || 'Dashboard';
+        }
+
+        function openScanModal() {
+            document.getElementById('scanModal').classList.add('active');
+        }
+
+        function closeScanModal() {
+            document.getElementById('scanModal').classList.remove('active');
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('scanModal');
+            if (event.target == modal) {
+                modal.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>

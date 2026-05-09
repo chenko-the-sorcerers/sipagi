@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sekolah Penerima - SIPAGI</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        /* Penyesuaian Ukuran Modal agar lebih Proper */
+        .modal-content {
+            max-width: 600px !important; /* Lebar ideal */
+            padding: 2.5rem !important;
+            border-radius: 20px !important;
+        }
+        .form-group { margin-bottom: 1.25rem; }
+        .form-label { display: block; margin-bottom: 0.5rem; font-weight: 700; color: var(--text-dark); font-size: 0.9rem; }
+        .form-input { 
+            width: 100%; padding: 0.75rem 1rem; border: 2px solid var(--border); 
+            border-radius: 10px; font-family: inherit; font-size: 0.9rem; outline: none;
+        }
+        .form-input:focus { border-color: var(--primary-blue); }
+    </style>
+</head>
+<body>
+    <aside class="sidebar" id="sidebar-container"></aside>
+
+    <div class="main-content">
+        <div class="topbar">
+            <div class="topbar-left">
+                <h2 id="page-title">Database Sekolah</h2>
+                <div class="breadcrumb">
+                    <span>Home</span> <span>/</span> <span id="breadcrumb-text">Sekolah Penerima</span>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <div class="search-box">
+                    <i class="fi fi-rr-search"></i>
+                    <input type="text" id="search-sekolah" placeholder="Cari nama sekolah...">
+                </div>
+                <button class="icon-btn"><i class="fi fi-rr-bell"></i></button>
+                <button class="icon-btn"><i class="fi fi-rr-user"></i></button>
+            </div>
+        </div>
+
+        <div class="content-section active" style="display: block;">
+            <!-- Bagian Stats Grid di sekolah.html -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon blue"><i class="fi fi-rr-school"></i></div>
+                        <div class="stat-trend up"><i class="fi fi-rr-arrow-up"></i><span>+12%</span></div>
+                    </div>
+                    <div class="stat-value" id="stat-total-sekolah">1.541</div>
+                    <div class="stat-label">Total Sekolah se-DIY</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon green"><i class="fi fi-rr-check-circle"></i></div>
+                        <div class="stat-trend up"><i class="fi fi-rr-arrow-up"></i><span>Stabil</span></div>
+                    </div>
+                    <div class="stat-value" id="stat-aktif">1.398</div>
+                    <div class="stat-label">Status Aktif</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon orange"><i class="fi fi-rr-clock"></i></div>
+                        <div class="stat-trend down"><i class="fi fi-rr-arrow-down"></i><span>-2%</span></div>
+                    </div>
+                    <div class="stat-value" id="stat-pending">156</div>
+                    <div class="stat-label">Pending Verifikasi</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon purple"><i class="fi fi-rr-users"></i></div>
+                        <div class="stat-trend up"><i class="fi fi-rr-arrow-up"></i><span>+150</span></div>
+                    </div>
+                    <div class="stat-value" id="stat-total-siswa">15.110</div>
+                    <div class="stat-label">Total Siswa</div>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="table-card-header">
+                    <h3>Daftar 155 Sekolah Terverifikasi</h3>
+                    <div style="display: flex; gap: 0.75rem; align-items: center;">
+                        <select id="filter-wilayah" class="btn btn-outline" style="padding: 0.75rem;">
+                            <option value="Semua">Semua Kabupaten</option>
+                            <option value="Sleman">Kab. Sleman</option>
+                            <option value="Bantul">Kab. Bantul</option>
+                            <option value="Yogyakarta">Kota Yogyakarta</option>
+                            <option value="Gunungkidul">Kab. Gunungkidul</option>
+                            <option value="Kulon Progo">Kab. Kulon Progo</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="window.openAddSchoolModal()">
+                            <i class="fi fi-rr-plus"></i> Tambah Sekolah
+                        </button>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Nama Sekolah</th>
+                            <th>Wilayah</th>
+                            <th>Siswa</th>
+                            <th>Akr.</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body-sekolah">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tambah Sekolah (Ukuran & Input disesuaikan) -->
+    <div id="addSchoolModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Registrasi Sekolah Baru</h2>
+                <button class="close-btn" onclick="window.closeAddSchoolModal()">×</button>
+            </div>
+            <form id="form-tambah-sekolah">
+                <div class="form-group">
+                    <label class="form-label">Nama Sekolah</label>
+                    <input type="text" id="in-nama" class="form-input" placeholder="Masukkan nama sekolah lengkap" required>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div class="form-group">
+                        <label class="form-label">Kabupaten/Kota</label>
+                        <select id="in-kab" class="form-input" required>
+                            <option value="">Pilih Wilayah</option>
+                            <option value="Sleman">Sleman</option>
+                            <option value="Bantul">Bantul</option>
+                            <option value="Yogyakarta">Yogyakarta</option>
+                            <option value="Gunungkidul">Gunungkidul</option>
+                            <option value="Kulon Progo">Kulon Progo</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Kecamatan</label>
+                        <select id="in-kec" class="form-input" required disabled>
+                            <option value="">Pilih Kabupaten Dulu</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div class="form-group">
+                        <label class="form-label">Jumlah Siswa</label>
+                        <input type="number" id="in-siswa" class="form-input" placeholder="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Akreditasi</label>
+                        <select id="in-akreditasi" class="form-input">
+                            <option value="A">A (Sangat Baik)</option>
+                            <option value="B">B (Baik)</option>
+                            <option value="C">C (Cukup)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem; justify-content: flex-end;">
+                    <button type="button" class="btn btn-outline" onclick="window.closeAddSchoolModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan Database</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="../../js/pages/sekolah.js"></script>
+</body>
+</html>

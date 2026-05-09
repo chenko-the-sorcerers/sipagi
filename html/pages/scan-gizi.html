@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Gizi AI - SIPAGI</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel="stylesheet" href="../../style.css">
+    
+    <style>
+        .scanner-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+        
+        .camera-box {
+            background: var(--bg-light);
+            border: 2px dashed var(--secondary-blue);
+            border-radius: 12px;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .camera-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none; /* Tersembunyi sampai ada foto */
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        /* Loading Spinner AI */
+        .ai-loader {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--light-blue);
+            border-top: 5px solid var(--primary-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <aside class="sidebar" id="sidebar-container"></aside>
+
+    <div class="main-content">
+        <div class="topbar">
+            <div class="topbar-left">
+                <h2 id="page-title">Scan Gizi AI</h2>
+                <div class="breadcrumb">
+                    <span>Home</span> <span>/</span> <span id="breadcrumb-text">Scan Gizi</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section active" style="display: block;">
+            
+            <div class="table-card" style="padding: 2rem;">
+                <div style="margin-bottom: 1.5rem;">
+                    <h3 style="font-family: 'Outfit'; font-size: 1.5rem; color: var(--dark-blue);">Analisis Komposisi Makanan</h3>
+                    <p style="color: var(--text-gray);">Unggah atau potret makanan langsung untuk mendeteksi kalori dan makronutrien menggunakan AI Vision.</p>
+                </div>
+
+                <div class="scanner-container">
+                    <!-- Area Kiri: Input Gambar -->
+                    <div>
+                        <div class="camera-box" id="drop-zone">
+                            <img id="preview-image" src="" alt="Preview Makanan">
+                            <i class="fi fi-rr-camera" style="font-size: 3rem; color: var(--secondary-blue); z-index: 1;"></i>
+                            <h4 style="z-index: 1; color: var(--dark-blue);">Ambil Foto atau Tarik File</h4>
+                            <input type="file" id="file-input" accept="image/*" style="display: none;">
+                            <div style="z-index: 1; display: flex; gap: 0.5rem;">
+                                <button class="btn btn-outline" onclick="document.getElementById('file-input').click()"><i class="fi fi-rr-folder-upload"></i> Pilih File</button>
+                            </div>
+                        </div>
+                        <button id="btn-analyze" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 1.5rem; display: none;">
+                            <i class="fi fi-rr-magic-wand"></i> Analisis Gambar Ini
+                        </button>
+                    </div>
+
+                    <!-- Area Kanan: Loading / Hasil (Diambil dari desain Modal sebelumnya) -->
+                    <div>
+                        <div class="ai-loader" id="ai-loading">
+                            <div class="spinner"></div>
+                            <h4 style="color: var(--primary-blue);">AI Sedang Menganalisis Gambar...</h4>
+                            <p style="color: var(--text-gray); font-size: 0.85rem;">Mendeteksi porsi, bahan, dan kalori</p>
+                        </div>
+
+                        <!-- Hasil akan disuntikkan oleh JS ke dalam div ini -->
+                        <div id="ai-result" style="display: none;">
+                            <!-- Format hasil copas dari scan-modal.html sebelumnya -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script type="module" src="../../js/pages/scan-gizi.js"></script>
+</body>
+</html>

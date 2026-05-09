@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export Data - SIPAGI</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <aside class="sidebar" id="sidebar-container"></aside>
+
+    <div class="main-content">
+        <div class="topbar">
+            <div class="topbar-left">
+                <h2 id="page-title">Export Data</h2>
+                <div class="breadcrumb">
+                    <span>Home</span> <span>/</span> <span id="breadcrumb-text">Export Data</span>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <div class="search-box">
+                    <i class="fi fi-rr-search"></i>
+                    <input type="text" placeholder="Cari tipe data...">
+                </div>
+                <button class="icon-btn"><i class="fi fi-rr-bell"></i></button>
+                <button class="icon-btn"><i class="fi fi-rr-user"></i></button>
+            </div>
+        </div>
+
+        <div class="content-section active" style="display: block;">
+            <div class="quick-actions" style="margin-bottom: 2rem;">
+                <h3>Ekspor Data</h3>
+                <div class="action-grid">
+                    <a href="#" class="action-btn">
+                        <i class="fi fi-rr-file-csv action-icon"></i>
+                        <span class="action-label">Export CSV</span>
+                    </a>
+                    <a href="#" class="action-btn">
+                        <i class="fi fi-rr-file-excel action-icon"></i>
+                        <span class="action-label">Export Excel</span>
+                    </a>
+                    <a href="#" class="action-btn">
+                        <i class="fi fi-rr-file-pdf action-icon"></i>
+                        <span class="action-label">Export PDF</span>
+                    </a>
+                    <a href="#" class="action-btn">
+                        <i class="fi fi-rr-print action-icon"></i>
+                        <span class="action-label">Print Report</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="table-card-header">
+                    <h3>Data yang Dapat Diekspor</h3>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Jenis Data</th>
+                            <th>Jumlah Record</th>
+                            <th>Format Tersedia</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Data Sekolah Penerima</td>
+                            <td>156 sekolah</td>
+                            <td>CSV, Excel, PDF</td>
+                            <td><button class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Ekspor</button></td>
+                        </tr>
+                        <tr>
+                            <td>Data Penerima Manfaat</td>
+                            <td>1,245 siswa</td>
+                            <td>CSV, Excel, PDF</td>
+                            <td><button class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Ekspor</button></td>
+                        </tr>
+                        <tr>
+                            <td>Laporan Distribusi Harian</td>
+                            <td>165 hari</td>
+                            <td>CSV, Excel, PDF</td>
+                            <td><button class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Ekspor</button></td>
+                        </tr>
+                        <tr>
+                            <td>Laporan Kualitas Gizi</td>
+                            <td>156 sekolah</td>
+                            <td>CSV, Excel, PDF</td>
+                            <td><button class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Ekspor</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../../js/pages/export-data.js"></script>
+</body>
+</html>

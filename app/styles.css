@@ -1,0 +1,398 @@
+.erp-page {
+    padding: 2rem;
+}
+
+.erp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.erp-header h2,
+.erp-card h3 {
+    font-family: 'Outfit', sans-serif;
+    color: var(--dark-blue);
+}
+
+.erp-header p,
+.erp-muted,
+.erp-stat-note {
+    color: var(--text-gray);
+}
+
+.erp-actions,
+.erp-inline-actions,
+.inventory-action-bar {
+    display: flex;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+}
+
+.erp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.erp-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+}
+
+.erp-stat-label {
+    color: var(--text-gray);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.erp-stat-value {
+    color: var(--text-dark);
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.7rem;
+    font-weight: 800;
+    margin-top: 0.5rem;
+}
+
+.erp-stat-note,
+.erp-muted {
+    font-size: 0.85rem;
+}
+
+.erp-toolbar {
+    display: grid;
+    grid-template-columns: 1fr 180px 160px;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.erp-input,
+.erp-select,
+.erp-textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem 0.85rem;
+    font: inherit;
+    background: var(--white);
+    color: var(--text-dark);
+}
+
+.erp-textarea {
+    min-height: 84px;
+    resize: vertical;
+}
+
+.erp-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.8rem;
+}
+
+.erp-form-grid .full {
+    grid-column: 1 / -1;
+}
+
+.erp-field label {
+    display: block;
+    color: var(--text-gray);
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+}
+
+.erp-btn {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.72rem 1rem;
+    background: var(--white);
+    color: var(--text-dark);
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.erp-btn.primary {
+    background: var(--primary-blue);
+    border-color: var(--primary-blue);
+    color: var(--white);
+}
+
+.erp-btn.danger {
+    background: var(--danger-light);
+    border-color: var(--danger-light);
+    color: var(--danger);
+}
+
+.erp-btn.small {
+    padding: 0.45rem 0.65rem;
+    font-size: 0.78rem;
+}
+
+.erp-table-wrap {
+    overflow-x: auto;
+}
+
+.erp-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 760px;
+}
+
+.erp-table th,
+.erp-table td {
+    border-bottom: 1px solid var(--border);
+    padding: 0.85rem;
+    text-align: left;
+    vertical-align: top;
+}
+
+.erp-table th {
+    color: var(--text-gray);
+    font-size: 0.76rem;
+    text-transform: uppercase;
+}
+
+.erp-status {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 0.25rem 0.55rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+
+.erp-status.safe {
+    color: var(--success);
+    background: var(--success-light);
+}
+
+.erp-status.warning {
+    color: var(--warning);
+    background: var(--warning-light);
+}
+
+.erp-status.danger {
+    color: var(--danger);
+    background: var(--danger-light);
+}
+
+.erp-sidebar-placeholder {
+    padding: 0.875rem 0.75rem;
+    color: var(--text-gray);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.inventory-action-bar {
+    margin-bottom: 1rem;
+}
+
+.inventory-view-grid,
+.product-module-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+.inventory-view-card {
+    border: 1px solid var(--border);
+    background: var(--white);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: left;
+    cursor: pointer;
+    min-height: 108px;
+}
+
+.inventory-view-card strong {
+    display: block;
+    color: var(--dark-blue);
+    font-family: 'Outfit', sans-serif;
+    margin-bottom: 0.45rem;
+}
+
+.inventory-view-card span {
+    color: var(--text-gray);
+    font-size: 0.86rem;
+    line-height: 1.45;
+}
+
+.inventory-view-card.active {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px var(--light-blue);
+}
+
+.inventory-empty-action,
+.inventory-loading,
+.inventory-error {
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.inventory-error {
+    border-color: var(--danger);
+    background: var(--danger-light);
+}
+
+.erp-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background: rgba(15, 23, 42, 0.46);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+}
+
+.erp-modal {
+    width: min(760px, 100%);
+    max-height: min(88vh, 860px);
+    overflow: auto;
+    background: var(--white);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    box-shadow: 0 26px 80px rgba(15, 23, 42, 0.28);
+}
+
+.erp-modal-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.erp-modal-body {
+    padding: 1.5rem;
+}
+
+.erp-icon-btn {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-light);
+    color: var(--text-dark);
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.inventory-svg-proof {
+    width: 150px;
+    max-width: 100%;
+    aspect-ratio: 12 / 7;
+    object-fit: contain;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--white);
+}
+
+.module-card-gap {
+    margin-top: 1rem;
+}
+
+.module-two-col {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.7fr);
+    gap: 1rem;
+}
+
+.module-check {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem 0.85rem;
+    background: var(--bg-light);
+    color: var(--text-dark);
+    font-weight: 700;
+}
+
+.module-check input {
+    margin-right: 0.5rem;
+}
+
+.product-module-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.product-feature-list {
+    margin-left: 1rem;
+    display: grid;
+    gap: 0.35rem;
+}
+
+.product-module-meta,
+.product-chip-list,
+.product-flow {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.product-chip,
+.product-flow span {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-light);
+    padding: 0.65rem 0.75rem;
+    font-weight: 700;
+}
+
+.product-access-table {
+    min-width: 1320px;
+}
+
+@media (max-width: 1100px) {
+    .erp-grid,
+    .inventory-view-grid,
+    .product-module-grid,
+    .erp-toolbar,
+    .module-two-col {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 760px) {
+    .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    .topbar,
+    .erp-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .erp-page {
+        padding: 1rem;
+    }
+
+    .erp-form-grid {
+        grid-template-columns: 1fr;
+    }
+}

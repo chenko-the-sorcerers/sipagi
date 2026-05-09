@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Program MBG - SIPAGI</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel="stylesheet" href="../../style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <aside class="sidebar" id="sidebar-container"></aside>
+
+    <div class="main-content">
+        <div class="topbar">
+            <div class="topbar-left">
+                <h2 id="page-title">Program Makan Bergizi</h2>
+                <div class="breadcrumb">
+                    <span>Home</span> <span>/</span> <span id="breadcrumb-text">Program MBG</span>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <div class="search-box">
+                    <i class="fi fi-rr-search"></i>
+                    <input type="text" placeholder="Cari program atau wilayah...">
+                </div>
+                <button class="icon-btn"><i class="fi fi-rr-bell"></i><span class="notification-badge">5</span></button>
+                <button class="icon-btn"><i class="fi fi-rr-user"></i></button>
+            </div>
+        </div>
+
+        <div class="content-section active" style="display: block;">
+            
+            <!-- 4 Kartu Statistik (Dinamis) -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon blue"><i class="fi fi-rr-book-alt"></i></div>
+                        <div class="stat-trend up"><i class="fi fi-rr-arrow-up"></i><span>Tren Positif</span></div>
+                    </div>
+                    <div class="stat-value" id="stat-sekolah">...</div>
+                    <div class="stat-label">Sekolah Terdaftar se-DIY</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon green"><i class="fi fi-rr-users"></i></div>
+                        <div class="stat-trend up"><i class="fi fi-rr-arrow-up"></i><span>Tren Positif</span></div>
+                    </div>
+                    <div class="stat-value" id="stat-siswa">...</div>
+                    <div class="stat-label">Siswa Penerima se-DIY</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon orange"><i class="fi fi-rr-calendar"></i></div>
+                        <div class="stat-trend up"><i class="fi fi-rr-arrow-up"></i><span>Day 165</span></div>
+                    </div>
+                    <div class="stat-value">180</div>
+                    <div class="stat-label">Target Hari Operasional</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon purple"><i class="fi fi-rr-money"></i></div>
+                        <div class="stat-trend down"><i class="fi fi-rr-arrow-down"></i><span>Efisiensi 4%</span></div>
+                    </div>
+                    <div class="stat-value" id="stat-anggaran">...</div>
+                    <div class="stat-label">Anggaran Terserap</div>
+                </div>
+            </div>
+
+            <!-- Tabel Rincian Global (Dinamis) -->
+            <div class="table-card" style="margin-bottom: 2rem;">
+                <div class="table-card-header">
+                    <h3>Rincian Global Program MBG Wilayah DIY</h3>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Aspek Program</th>
+                            <th>Target Skala Provinsi</th>
+                            <th>Realisasi Saat Ini</th>
+                            <th>Persentase</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cakupan Sekolah</td>
+                            <td>1.600 sekolah</td>
+                            <td id="tbl-sekolah">...</td>
+                            <td id="tbl-sekolah-pct">...</td>
+                        </tr>
+                        <tr>
+                            <td>Penerima Manfaat</td>
+                            <td>18.000 siswa</td>
+                            <td id="tbl-siswa">...</td>
+                            <td id="tbl-siswa-pct">...</td>
+                        </tr>
+                        <tr>
+                            <td>Hari Operasional</td>
+                            <td>180 hari</td>
+                            <td>165 hari</td>
+                            <td><span class="status-badge warning">91%</span></td>
+                        </tr>
+                        <tr>
+                            <td>Rata-rata Pemenuhan Gizi</td>
+                            <td>100%</td>
+                            <td id="tbl-gizi">...</td>
+                            <td><span class="status-badge success">Optimal</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Tren Partisipasi Sekolah & Siswa</h3>
+                        <div class="chart-filter">
+                            <button id="btn-sem1" class="filter-btn active">Semester 1</button>
+                            <button id="btn-sem2" class="filter-btn">Semester 2</button>
+                        </div>
+                    </div>
+                    <div style="height: 300px; width: 100%;">
+                        <canvas id="areaChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Alokasi Anggaran Program</h3>
+                    </div>
+                    <div style="height: 300px; width: 100%; display: flex; justify-content: center;">
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-card" style="margin-bottom: 2rem;">
+                <div class="table-card-header">
+                    <h3>Detail Implementasi per Wilayah (Kecamatan)</h3>
+                    <div style="display: flex; gap: 0.75rem; align-items: center;">
+                        <select id="filter-kabupaten" class="btn btn-outline" style="padding: 0.75rem; cursor: pointer; border-radius: 8px; font-family: inherit;">
+                            <option value="Semua">Semua Wilayah DIY</option>
+                            <option value="Sleman">Kab. Sleman</option>
+                            <option value="Bantul">Kab. Bantul</option>
+                            <option value="Yogyakarta">Kota Yogyakarta</option>
+                            <option value="Gunungkidul">Kab. Gunungkidul</option>
+                            <option value="Kulon Progo">Kab. Kulon Progo</option>
+                        </select>
+                        <button id="btn-export-csv" class="btn btn-primary">
+                            <i class="fi fi-rr-download"></i> Ekspor CSV
+                        </button>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Kecamatan</th>
+                            <th>Wilayah</th>
+                            <th>Total Sekolah</th>
+                            <th>Total Siswa</th>
+                            <th>Porsi Terkirim</th>
+                            <th>Anggaran Terserap</th>
+                            <th>Status Pemenuhan</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body-kecamatan">
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <script type="module" src="../../js/pages/program-mbg.js"></script>
+</body>
+</html>

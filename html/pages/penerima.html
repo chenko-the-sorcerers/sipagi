@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penerima Manfaat - SIPAGI</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .modal-content {
+            max-width: 600px !important;
+            padding: 2.5rem !important;
+            border-radius: 20px !important;
+        }
+        .form-group { margin-bottom: 1.25rem; }
+        .form-label { display: block; margin-bottom: 0.5rem; font-weight: 700; color: var(--text-dark); font-size: 0.9rem; }
+        .form-input { 
+            width: 100%; padding: 0.75rem 1rem; border: 2px solid var(--border); 
+            border-radius: 10px; font-family: inherit; font-size: 0.9rem; outline: none;
+        }
+        .form-input:focus { border-color: var(--primary-blue); }
+    </style>
+</head>
+<body>
+    <aside class="sidebar" id="sidebar-container"></aside>
+
+    <div class="main-content">
+        <div class="topbar">
+            <div class="topbar-left">
+                <h2 id="page-title">Data Siswa Penerima</h2>
+                <div class="breadcrumb">
+                    <span>Home</span> <span>/</span> <span id="breadcrumb-text">Penerima Manfaat</span>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <div class="search-box">
+                    <i class="fi fi-rr-search"></i>
+                    <input type="text" id="search-siswa" placeholder="Cari nama siswa atau NISN...">
+                </div>
+                <button class="icon-btn"><i class="fi fi-rr-bell"></i></button>
+                <button class="icon-btn"><i class="fi fi-rr-user"></i></button>
+            </div>
+        </div>
+
+        <div class="content-section active" style="display: block;">
+            <!-- Stats Grid Sinkron Dashboard -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon blue"><i class="fi fi-rr-users"></i></div>
+                    </div>
+                    <div class="stat-value" id="stat-total-siswa">15.255</div>
+                    <div class="stat-label">Total Penerima se-DIY</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon green"><i class="fi fi-rr-venus-mars"></i></div>
+                    </div>
+                    <div class="stat-value" id="stat-laki">7.500</div>
+                    <div class="stat-label">Laki-laki</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon orange"><i class="fi fi-rr-venus-mars"></i></div>
+                    </div>
+                    <div class="stat-value" id="stat-perempuan">7.755</div>
+                    <div class="stat-label">Perempuan</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon purple"><i class="fi fi-rr-star"></i></div>
+                    </div>
+                    <div class="stat-value">98.5%</div>
+                    <div class="stat-label">Rata-rata Kehadiran</div>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="table-card-header">
+                    <h3>Database Siswa (Sampel 155 Data)</h3>
+                    <div style="display: flex; gap: 0.75rem; align-items: center;">
+                        <select id="filter-wilayah" class="btn btn-outline" style="padding: 0.75rem;">
+                            <option value="Semua">Semua Kabupaten</option>
+                            <option value="Sleman">Kab. Sleman</option>
+                            <option value="Bantul">Kab. Bantul</option>
+                            <option value="Yogyakarta">Kota Yogyakarta</option>
+                            <option value="Gunungkidul">Kab. Gunungkidul</option>
+                            <option value="Kulon Progo">Kab. Kulon Progo</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="window.openAddSiswaModal()">
+                            <i class="fi fi-rr-plus"></i> Tambah Siswa
+                        </button>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Nama Siswa</th>
+                            <th>NISN</th>
+                            <th>Sekolah</th>
+                            <th>Kelas</th>
+                            <th>Wilayah</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body-siswa">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tambah Siswa -->
+    <div id="addSiswaModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Registrasi Siswa Baru</h2>
+                <button class="close-btn" onclick="window.closeAddSiswaModal()">×</button>
+            </div>
+            <form id="form-tambah-siswa">
+                <div class="form-group">
+                    <label class="form-label">Nama Lengkap Siswa</label>
+                    <input type="text" id="in-nama" class="form-input" placeholder="Nama sesuai akta kelahiran" required>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div class="form-group">
+                        <label class="form-label">NISN</label>
+                        <input type="number" id="in-nisn" class="form-input" placeholder="Contoh: 0123456789" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Jenis Kelamin</label>
+                        <select id="in-gender" class="form-input" required>
+                            <option value="Laki-laki">Laki-laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div class="form-group">
+                        <label class="form-label">Sekolah</label>
+                        <input type="text" id="in-sekolah" class="form-input" placeholder="Contoh: SDN 01 Depok" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Kelas</label>
+                        <select id="in-kelas" class="form-input">
+                            <option value="1">Kelas 1</option>
+                            <option value="2">Kelas 2</option>
+                            <option value="3">Kelas 3</option>
+                            <option value="4">Kelas 4</option>
+                            <option value="5">Kelas 5</option>
+                            <option value="6">Kelas 6</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div class="form-group">
+                        <label class="form-label">Kabupaten</label>
+                        <select id="in-kab" class="form-input" required>
+                            <option value="">Pilih Wilayah</option>
+                            <option value="Sleman">Sleman</option>
+                            <option value="Bantul">Bantul</option>
+                            <option value="Yogyakarta">Yogyakarta</option>
+                            <option value="Gunungkidul">Gunungkidul</option>
+                            <option value="Kulon Progo">Kulon Progo</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Kecamatan</label>
+                        <select id="in-kec" class="form-input" required disabled>
+                            <option value="">Pilih Kabupaten Dulu</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem; justify-content: flex-end;">
+                    <button type="button" class="btn btn-outline" onclick="window.closeAddSiswaModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary">Daftarkan Siswa</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="../../js/pages/penerima.js"></script>
+</body>
+</html>

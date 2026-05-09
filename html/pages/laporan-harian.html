@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Harian - SIPAGI</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <aside class="sidebar" id="sidebar-container"></aside>
+
+    <div class="main-content">
+        <div class="topbar">
+            <div class="topbar-left">
+                <h2 id="page-title">Laporan Harian</h2>
+                <div class="breadcrumb">
+                    <span>Home</span> <span>/</span> <span id="breadcrumb-text">Laporan Harian</span>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <div class="search-box">
+                    <i class="fi fi-rr-search"></i>
+                    <input type="text" placeholder="Cari laporan...">
+                </div>
+                <button class="icon-btn"><i class="fi fi-rr-bell"></i></button>
+                <button class="icon-btn"><i class="fi fi-rr-user"></i></button>
+            </div>
+        </div>
+
+        <div class="content-section active" style="display: block;">
+            <div class="table-card" style="margin-bottom: 2rem;">
+                <div class="table-card-header">
+                    <h3>Laporan Harian Distribusi & Gizi</h3>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <button class="btn btn-outline">
+                            <i class="fi fi-rr-filter"></i> Filter Tanggal
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="fi fi-rr-download"></i> Download PDF
+                        </button>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Total Porsi</th>
+                            <th>Sekolah Terlayani</th>
+                            <th>Pemenuhan Gizi</th>
+                            <th>Catatan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>20 Apr 2026</td>
+                            <td>1,660</td>
+                            <td>4 sekolah</td>
+                            <td><span class="status-badge success">95.8%</span></td>
+                            <td>Distribusi lancar, semua sekolah terkirim tepat waktu</td>
+                        </tr>
+                        <tr>
+                            <td>19 Apr 2026</td>
+                            <td>1,645</td>
+                            <td>4 sekolah</td>
+                            <td><span class="status-badge success">94.2%</span></td>
+                            <td>1 rute tertunda 15 menit, namun tetap dalam standar</td>
+                        </tr>
+                        <tr>
+                            <td>18 Apr 2026</td>
+                            <td>1,620</td>
+                            <td>4 sekolah</td>
+                            <td><span class="status-badge success">96.1%</span></td>
+                            <td>Semua parameter terpenuhi dengan baik</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../../js/pages/laporan-harian.js"></script>
+</body>
+</html>

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Harian - SIPAGI</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    
+    <link rel="stylesheet" href="../../style.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* --- Desain Kalender Mei 2026 --- */
+        .calendar-card {
+            background: var(--white);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 12px;
+            background: #f1f5f9;
+            padding: 12px;
+            border-radius: 16px;
+        }
+        .cal-day-label {
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            padding: 10px 0;
+            text-transform: uppercase;
+        }
+        .cal-date {
+            background: #fff;
+            min-height: 110px;
+            border-radius: 12px;
+            padding: 10px;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .cal-date:hover {
+            border-color: var(--primary-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .cal-date.today {
+            border: 2px solid var(--primary-blue);
+            background: var(--light-blue);
+        }
+        .cal-date.weekend {
+            background: #fff1f2;
+        }
+        .cal-date.weekend .date-num {
+            color: #e11d48;
+        }
+        .cal-date.empty {
+            background: transparent;
+            border: none;
+            cursor: default;
+        }
+        .cal-date.empty:hover { transform: none; box-shadow: none; }
+
+        .date-num { font-weight: 800; font-size: 1rem; color: var(--dark-blue); }
+        .date-menu { 
+            font-size: 0.75rem; 
+            font-weight: 600;
+            color: var(--text-dark); 
+            line-height: 1.3;
+            margin-top: 5px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        /* --- Gizi & Price Badges --- */
+        .price-tag { color: #059669; font-weight: 700; font-family: 'Outfit'; font-size: 0.8rem; }
+        .tkpi-badge { 
+            font-size: 0.65rem; 
+            background: #fee2e2; 
+            color: #991b1b; 
+            padding: 2px 6px; 
+            border-radius: 4px; 
+            font-weight: 700;
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        /* --- Modal Plates & Forms --- */
+        .modal-content { max-width: 650px !important; border-radius: 24px !important; }
+        .nutrition-group {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 1.5rem;
+        }
+        .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+        
+        .plate-container {
+            width: 160px; height: 160px; border-radius: 50%; border: 10px solid #f1f5f9;
+            margin: 0 auto 1.5rem; position: relative; overflow: hidden; display: flex; flex-wrap: wrap;
+        }
+        .p-karbo { width: 50%; height: 50%; background: #fbbf24; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 800; color: #92400e; }
+        .p-sayur { width: 50%; height: 100%; background: #34d399; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 800; color: #065f46; }
+        .p-lauk { width: 50%; height: 50%; background: #f87171; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 800; color: #991b1b; }
+    </style>
+</head>
+<body>
+    <aside class="sidebar" id="sidebar-container"></aside>
+
+    <div class="main-content">
+        <div class="topbar">
+            <div class="topbar-left">
+                <h2 id="page-title">Manajemen Menu & Gizi</h2>
+                <div class="breadcrumb"><span>Home</span> <span>/</span> <span id="breadcrumb-text">Menu Harian</span></div>
+            </div>
+            <div class="topbar-right">
+                <div class="search-box">
+                    <i class="fi fi-rr-search"></i>
+                    <input type="text" id="search-db" placeholder="Cari di database menu...">
+                </div>
+                <button class="btn btn-primary" onclick="window.openAddMenuModal()">
+                    <i class="fi fi-rr-plus"></i> Menu Baru
+                </button>
+            </div>
+        </div>
+
+        <div class="content-section active" style="display: block;">
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="fi fi-rr-restaurant"></i></div>
+                    <div class="stat-value">155</div>
+                    <div class="stat-label">Database Menu</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="fi fi-rr-money"></i></div>
+                    <div class="stat-value" id="stat-avg-price">Rp 17.500</div>
+                    <div class="stat-label">Rata-rata Harga/Porsi (DIY)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange"><i class="fi fi-rr-flame"></i></div>
+                    <div class="stat-value">465 kkal</div>
+                    <div class="stat-label">Rata-rata Energi TKPI</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon purple"><i class="fi fi-rr-smile"></i></div>
+                    <div class="stat-value">4.9/5</div>
+                    <div class="stat-label">Rating Kepuasan</div>
+                </div>
+            </div>
+
+            <div class="calendar-card">
+                <div class="calendar-header">
+                    <div>
+                        <h3>Kalender Konsumsi: Mei 2026</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-gray);">Wilayah Operasional: D.I. Yogyakarta</p>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <button class="icon-btn"><i class="fi fi-rr-angle-left"></i></button>
+                        <strong style="font-family: 'Outfit'; font-size: 1.1rem;">MEI 2026</strong>
+                        <button class="icon-btn"><i class="fi fi-rr-angle-right"></i></button>
+                    </div>
+                </div>
+                
+                <div class="calendar-grid" id="calendar-may">
+                    <div class="cal-day-label">Mgg</div><div class="cal-day-label">Sen</div><div class="cal-day-label">Sel</div>
+                    <div class="cal-day-label">Rab</div><div class="cal-day-label">Kam</div><div class="cal-day-label">Jum</div>
+                    <div class="cal-day-label">Sab</div>
+                    </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header"><h3>Proporsi Gizi TKPI (Rata-rata)</h3></div>
+                    <div style="height: 250px;"><canvas id="nutritionDonutChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header"><h3>Informasi Pedoman</h3></div>
+                    <div style="padding: 0.5rem;">
+                        <p style="font-size: 0.85rem; line-height: 1.6; color: var(--text-gray);">
+                            Penyusunan menu SIPAGI mengikuti <strong>Tabel Komposisi Pangan Indonesia (TKPI)</strong> dan standar <strong>Isi Piringku</strong>:
+                        </p>
+                        <ul style="font-size: 0.85rem; margin-top: 1rem; color: var(--text-dark); display: flex; flex-direction: column; gap: 10px;">
+                            <li>✅ <strong>1/2 Piring:</strong> Sayur & Buah</li>
+                            <li>✅ <strong>1/4 Piring:</strong> Karbohidrat (Makanan Pokok)</li>
+                            <li>✅ <strong>1/4 Piring:</strong> Lauk Pauk (Hewani & Nabati)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="table-card-header">
+                    <h3>Master Database Menu (Gizi & Harga)</h3>
+                    <button class="btn btn-outline" onclick="window.print()">
+                        <i class="fi fi-rr-print"></i> Cetak Laporan
+                    </button>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nama Menu Paket</th>
+                            <th>Komposisi (TKPI)</th>
+                            <th>Energi</th>
+                            <th>Estimasi Harga</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="db-menu-body">
+                        </tbody>
+                </table>
+                <p style="font-size: 0.7rem; color: var(--text-gray); margin-top: 1.5rem; padding: 0 1rem;">
+                    * Harga berdasarkan rata-rata pasar tradisional di Sleman, Bantul, dan Kota Yogyakarta per Mei 2026.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="detailMenuModal" class="modal">
+        <div class="modal-content" style="text-align: center;">
+            <div class="modal-header">
+                <h2>Analisis Nutrisi & Biaya</h2>
+                <button class="close-btn" onclick="window.closeDetailModal()">×</button>
+            </div>
+            
+            <div class="plate-container">
+                <div class="p-karbo">KARBO</div>
+                <div class="p-sayur">SAYUR</div>
+                <div class="p-lauk">LAUK</div>
+            </div>
+
+            <div id="detail-info">
+                </div>
+            
+            <div style="margin-top: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <button class="btn btn-outline" onclick="window.closeDetailModal()">Tutup</button>
+                <button class="btn btn-primary" onclick="alert('Jadwal diperbarui!')">Gunakan di Jadwal</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="addMenuModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Input Menu Gizi Seimbang</h2>
+                <button class="close-btn" onclick="window.closeAddMenuModal()">×</button>
+            </div>
+            <form id="form-tambah-menu">
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label class="form-label" style="display:block; font-weight:700; margin-bottom:5px;">Nama Paket Menu</label>
+                    <input type="text" id="m-nama" class="form-input" placeholder="Contoh: Paket Jogja Sehat A" required style="width:100%; padding:10px; border:1px solid #ddd; border-radius:8px;">
+                </div>
+
+                <div class="nutrition-group">
+                    <h4 style="margin-bottom:1rem; color:var(--primary-blue); font-size:0.8rem;">📦 KOMPOSISI ISI PIRINGKU</h4>
+                    <div class="form-grid-3">
+                        <div>
+                            <label class="form-label">Karbohidrat</label>
+                            <input type="text" id="m-karbo-name" class="form-input" placeholder="Nasi Putih" required>
+                        </div>
+                        <div>
+                            <label class="form-label">Lauk Hewani</label>
+                            <input type="text" id="m-hewani" class="form-input" placeholder="Ayam Bakar" required>
+                        </div>
+                        <div>
+                            <label class="form-label">Sayuran</label>
+                            <input type="text" id="m-sayur" class="form-input" placeholder="Sayur Asem" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 1rem; justify-content: flex-end;">
+                    <button type="button" class="btn btn-outline" onclick="window.closeAddMenuModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan Database</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="../../js/pages/menu-harian.js"></script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit Gizi AI - SIPAGI</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel="stylesheet" href="../../style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .scan-container { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; margin-bottom: 2rem; }
+        .scanner-view {
+            background: #1a1a1a; border-radius: 24px; height: 420px;
+            position: relative; overflow: hidden; border: 4px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+        }
+        #webcam-video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); display: none; }
+        .scan-overlay-line {
+            position: absolute; width: 100%; height: 4px; background: #0056B3;
+            box-shadow: 0 0 20px #0056B3; z-index: 5; top: 15%; display: none;
+            animation: scanMove 2.5s infinite ease-in-out;
+        }
+        @keyframes scanMove { 0%, 100% { top: 15%; } 50% { top: 85%; } }
+        .camera-placeholder { color: #666; text-align: center; padding: 2rem; z-index: 1; }
+        .camera-controls { position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); z-index: 10; }
+        .scan-result-card { background: var(--white); border-radius: 24px; padding: 1.5rem; border: 2px solid var(--border); min-height: 420px; }
+        .ai-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--light-blue); color: var(--primary-blue); padding: 6px 12px; border-radius: 50px; font-size: 0.7rem; font-weight: 700; margin-bottom: 1rem; }
+        .quality-tag { padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; }
+        .tag-safe { background: #dcfce7; color: #166534; }
+        .tag-warn { background: #fee2e2; color: #991b1b; }
+        .ai-loader { border: 3px solid #f3f3f3; border-top: 3px solid var(--primary-blue); border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; margin: 0 auto 10px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <aside class="sidebar" id="sidebar-container"></aside>
+    <div class="main-content">
+        <div class="topbar">
+            <div class="topbar-left">
+                <h2 id="page-title">Audit Gizi Real-time (Groq AI)</h2>
+                <div class="breadcrumb"><span>Home</span> <span>/</span> <span>Kualitas</span></div>
+            </div>
+            <div class="topbar-right">
+                <button class="btn btn-outline" id="btn-init-camera" onclick="window.initCamera()">
+                    <i class="fi fi-rr-video-camera"></i> Aktifkan Kamera
+                </button>
+            </div>
+        </div>
+
+        <div class="content-section active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="fi fi-rr-search-alt"></i></div>
+                    <div class="stat-value">1.240</div><div class="stat-label">Sampel DIY</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="fi fi-rr-shield-check"></i></div>
+                    <div class="stat-value">94.8%</div><div class="stat-label">Kepatuhan Gizi</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange"><i class="fi fi-rr-money"></i></div>
+                    <div class="stat-value">8k - 10k</div><div class="stat-label">Budget MBG</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon purple"><i class="fi fi-rr-star"></i></div>
+                    <div class="stat-value">4.9/5</div><div class="stat-label">Skor Higienitas</div>
+                </div>
+            </div>
+
+            <div class="scan-container">
+                <div class="scanner-view">
+                    <div class="scan-overlay-line" id="ai-scan-line"></div>
+                    <div id="camera-placeholder" class="camera-placeholder">
+                        <i class="fi fi-rr-camera" style="font-size: 3rem; display: block; margin-bottom: 1rem; opacity: 0.3;"></i>
+                        <p>Klik "Aktifkan Kamera" untuk mulai</p>
+                    </div>
+                    <video id="webcam-video" autoplay playsinline muted></video>
+                    <canvas id="capture-canvas" style="display:none;"></canvas>
+                    <div class="camera-controls">
+                        <button class="btn btn-primary" id="btn-scan-action" onclick="window.captureAndAnalyze()" disabled>
+                            <i class="fi fi-rr-search-alt"></i> Analisis Piring Sekarang
+                        </button>
+                    </div>
+                </div>
+                <div class="scan-result-card">
+                    <div class="ai-badge"><i class="fi fi-rr-microchip"></i> Groq LPU 90B Vision</div>
+                    <div id="ai-status-box" style="text-align: center; margin-top: 3rem; color: var(--text-gray);">
+                        <p>Silakan aktifkan kamera untuk memulai audit.</p>
+                    </div>
+                    <div id="ai-result-box" style="display: none;"></div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card"><div class="chart-header"><h3>Grade Gizi DIY</h3></div><div style="height: 250px;"><canvas id="qualityPieChart"></canvas></div></div>
+                <div class="chart-card">
+                    <div class="chart-header"><h3>Log Audit (155 Sekolah)</h3></div>
+                    <div style="overflow-y: auto; max-height: 250px;">
+                        <table class="data-table" style="font-size: 0.75rem;">
+                            <thead><tr><th>Sekolah</th><th>Skor</th><th>Status</th></tr></thead>
+                            <tbody id="quality-mini-table"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-card" style="margin-top: 2rem;">
+                <div class="table-card-header">
+                    <h3>Database Log Kualitas Lengkap</h3>
+                    <select id="filter-kabupaten" class="btn btn-outline">
+                        <option value="Semua">Semua Wilayah</option>
+                        <option value="Sleman">Sleman</option>
+                        <option value="Bantul">Bantul</option>
+                        <option value="Yogyakarta">Yogyakarta</option>
+                    </select>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Tanggal</th><th>Sekolah</th><th>Porsi</th><th>Skor</th><th>Status</th><th>Aksi</th></tr>
+                    </thead>
+                    <tbody id="quality-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="analysisModal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header"><h2>Rincian Audit Gizi</h2><button class="close-btn" onclick="window.closeModal()">×</button></div>
+            <div id="analysis-detail-content" style="padding: 1rem 0;"></div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="window.closeModal()">Selesai</button>
+        </div>
+    </div>
+
+    <script type="module" src="../../js/pages/kualitas.js"></script>
+</body>
+</html>

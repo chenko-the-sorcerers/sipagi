@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisis Data - SIPAGI</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+    <aside class="sidebar" id="sidebar-container"></aside>
+
+    <div class="main-content">
+        <div class="topbar">
+            <div class="topbar-left">
+                <h2 id="page-title">Analisis Data</h2>
+                <div class="breadcrumb">
+                    <span>Home</span> <span>/</span> <span id="breadcrumb-text">Analisis Data</span>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <div class="search-box">
+                    <i class="fi fi-rr-search"></i>
+                    <input type="text" placeholder="Cari data...">
+                </div>
+                <button class="icon-btn"><i class="fi fi-rr-bell"></i></button>
+                <button class="icon-btn"><i class="fi fi-rr-user"></i></button>
+            </div>
+        </div>
+
+        <div class="content-section active" style="display: block;">
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Tren Penerima Manfaat 6 Bulan</h3>
+                    </div>
+                    <div class="chart-placeholder">
+                        📈 Area Chart
+                        <br><small>Pertumbuhan konsisten dari 800 menjadi 1,245 siswa</small>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Perbandingan Sekolah</h3>
+                    </div>
+                    <div class="chart-placeholder">
+                        📊 Bar Chart
+                        <br><small>Performa 4 sekolah terbaik</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-card" style="margin-bottom: 2rem;">
+                <div class="table-card-header">
+                    <h3>Analisis Kinerja Program</h3>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Indikator</th>
+                            <th>Target</th>
+                            <th>Realisasi</th>
+                            <th>Pencapaian</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cakupan Sekolah</td>
+                            <td>200</td>
+                            <td>156</td>
+                            <td>78%</td>
+                            <td><span class="status-badge warning">Perlu Ditingkatkan</span></td>
+                        </tr>
+                        <tr>
+                            <td>Penerima Manfaat</td>
+                            <td>2,000</td>
+                            <td>1,245</td>
+                            <td>62.3%</td>
+                            <td><span class="status-badge warning">Perlu Ditingkatkan</span></td>
+                        </tr>
+                        <tr>
+                            <td>Pemenuhan Gizi</td>
+                            <td>100%</td>
+                            <td>95.8%</td>
+                            <td>95.8%</td>
+                            <td><span class="status-badge success">Tercapai</span></td>
+                        </tr>
+                        <tr>
+                            <td>Tingkat Kepuasan</td>
+                            <td>90%</td>
+                            <td>95.8%</td>
+                            <td>106.4%</td>
+                            <td><span class="status-badge success">Melampaui Target</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../../js/pages/analisis-data.js"></script>
+</body>
+</html>

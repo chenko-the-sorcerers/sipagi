@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Utama - SIPAGI</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel="stylesheet" href="../../style.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <aside class="sidebar" id="sidebar-container"></aside>
+
+    <div class="main-content">
+        <!-- Topbar -->
+        <div class="topbar">
+            <div class="topbar-left">
+                <h2 id="page-title">Dashboard</h2>
+                <div class="breadcrumb">
+                    <span>Home</span> <span>/</span> <span id="breadcrumb-text">Dashboard</span>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <div class="search-box">
+                    <i class="fi fi-rr-search"></i>
+                    <input type="text" placeholder="Cari data, sekolah, atau laporan...">
+                </div>
+                <button class="icon-btn"><i class="fi fi-rr-bell"></i><span class="notification-badge">3</span></button>
+                <button class="icon-btn"><i class="fi fi-rr-user"></i></button>
+            </div>
+        </div>
+
+        <div class="content-section active" style="display: block;">
+            
+            <!-- 4 Kartu Statistik (Dinamis dari Data DIY) -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon blue"><i class="fi fi-rr-school"></i></div>
+                        <div class="stat-trend up"><i class="fi fi-rr-arrow-up"></i><span>12%</span></div>
+                    </div>
+                    <div class="stat-value" id="stat-sekolah">...</div>
+                    <div class="stat-label">Total Sekolah</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon green"><i class="fi fi-rr-users"></i></div>
+                        <div class="stat-trend up"><i class="fi fi-rr-arrow-up"></i><span>8%</span></div>
+                    </div>
+                    <div class="stat-value" id="stat-penerima">...</div>
+                    <div class="stat-label">Penerima Manfaat</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon orange"><i class="fi fi-rr-box"></i></div>
+                        <div class="stat-trend up"><i class="fi fi-rr-arrow-up"></i><span>24%</span></div>
+                    </div>
+                    <div class="stat-value" id="stat-porsi">...</div>
+                    <div class="stat-label">Porsi Terdistribusi</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon purple"><i class="fi fi-rr-star"></i></div>
+                        <div class="stat-trend up"><i class="fi fi-rr-arrow-up"></i><span>3%</span></div>
+                    </div>
+                    <div class="stat-value" id="stat-gizi">...</div>
+                    <div class="stat-label">Target Pemenuhan Gizi</div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h3>Aksi Cepat</h3>
+                <div class="action-grid">
+                    <a href="sekolah.html" class="action-btn">
+                        <i class="fi fi-rr-plus-circle action-icon"></i>
+                        <span class="action-label">Tambah Sekolah</span>
+                    </a>
+                    <a href="scan-gizi.html" class="action-btn">
+                        <i class="fi fi-rr-camera action-icon"></i>
+                        <span class="action-label">Scan Gizi AI</span>
+                    </a>
+                    <a href="menu-harian.html" class="action-btn">
+                        <i class="fi fi-rr-plate action-icon"></i>
+                        <span class="action-label">Input Menu</span>
+                    </a>
+                    <a href="laporan-harian.html" class="action-btn">
+                        <i class="fi fi-rr-document action-icon"></i>
+                        <span class="action-label">Buat Laporan</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Area Grafik -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Tren Distribusi Pangan Harian</h3>
+                        <div class="chart-filter">
+                            <button class="filter-btn active">7 Hari</button>
+                        </div>
+                    </div>
+                    <div style="height: 300px; width: 100%;">
+                        <canvas id="lineChartDashboard"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Kategori Menu Terdistribusi</h3>
+                    </div>
+                    <div style="height: 300px; width: 100%; display: flex; justify-content: center;">
+                        <canvas id="donutChartDashboard"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table & Activity Section -->
+            <div class="table-section">
+                <!-- Top Schools -->
+                <div class="table-card">
+                    <div class="table-card-header">
+                        <h3>Wilayah Capaian Tertinggi</h3>
+                        <a href="analisis-data.html" class="view-all-link">Lihat Analisis →</a>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Kecamatan</th>
+                                <th>Siswa</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="top-wilayah-body">
+                            <!-- Diisi oleh JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Recent Activities -->
+                <div class="activity-feed">
+                    <h3>Aktivitas Terbaru</h3>
+                    <div id="activity-container">
+                        <!-- Diisi oleh JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Table -->
+            <div class="table-card" style="margin: 2rem 0;">
+                <div class="table-card-header">
+                    <h3>Monitoring Harian Distribusi</h3>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <button class="btn btn-outline"><i class="fi fi-rr-filter"></i> Filter</button>
+                        <button class="btn btn-primary"><i class="fi fi-rr-download"></i> Export</button>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Wilayah Fokus</th>
+                            <th>Menu Hari Ini</th>
+                            <th>Total Porsi</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="daily-monitoring-body">
+                        <!-- Diisi oleh JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../../js/pages/dashboard.js"></script>
+</body>
+</html>
