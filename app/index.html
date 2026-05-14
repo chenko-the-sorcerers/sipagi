@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html class="h-full" data-kt-theme="true" data-kt-theme-mode="light" dir="ltr" lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIPAGI ERP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/vendor/metronic/vendors/keenicons/styles.bundle.css">
+    <link rel="stylesheet" href="./assets/vendor/metronic/css/core.bundle.css">
+    <link rel="stylesheet" href="./assets/vendor/metronic/css/styles.css">
+    <link rel="stylesheet" href="./assets/css/sipagi-tailwind.css">
+    <link rel="stylesheet" href="./assets/css/sipagi-ui-polish.css?v=shell-fix-20260514">
+</head>
+<body class="antialiased flex h-full text-base text-foreground bg-background demo1 kt-sidebar-fixed kt-header-fixed">
+    <script>
+        const defaultThemeMode = 'light';
+        const storedThemeMode = localStorage.getItem('kt-theme');
+        let themeMode = storedThemeMode || document.documentElement.getAttribute('data-kt-theme-mode') || defaultThemeMode;
+        if (themeMode === 'system') {
+            themeMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.classList.add(themeMode);
+    </script>
+    <div id="app" class="flex grow"></div>
+    <script src="./assets/vendor/metronic/js/core.bundle.js"></script>
+    <script src="./assets/vendor/metronic/vendors/ktui/ktui.min.js"></script>
+    <script src="./assets/vendor/metronic/js/layouts/demo1.js"></script>
+    <script type="module" src="./main.js?v=shell-fix-20260514"></script>
+</body>
+</html>

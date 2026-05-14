@@ -1,0 +1,404 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RecordStatus {
+  draft
+  active
+  inactive
+  pending_approval
+  approved
+  rejected
+  cancelled
+  deleted
+}
+
+enum ApprovalStatus {
+  draft
+  submitted
+  pending
+  approved
+  rejected
+  revision
+  cancelled
+}
+
+enum StockStatus {
+  aman
+  perlu_restock
+  kritis
+  habis
+  batch_perlu_cek
+  karantina
+}
+
+model SppgUnit {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  name      String
+  region    String?
+  address   String?
+  status    String   @default("active")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users     User[]
+  schools   School[]
+  items     Item[]
+  vendors   Vendor[]
+  recipes   Recipe[]
+  batches   StockBatch[]
+  auditLogs AuditLog[]
+}
+
+model User {
+  id        String   @id @default(cuid())
+  sppgId    String?
+  roleId    String
+  name      String
+  email     String   @unique
+  passwordHash String?
+  phone     String?
+  status    String   @default("active")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sppg SppgUnit? @relation(fields: [sppgId], references: [id])
+  role Role      @relation(fields: [roleId], references: [id])
+  access UserSppgAccess[]
+}
+
+model Role {
+  id          String   @id
+  name        String
+  description String?
+  status      String   @default("active")
+  users       User[]
+  permissions RolePermission[]
+}
+
+model RolePermission {
+  id         String  @id @default(cuid())
+  roleId     String
+  moduleKey  String
+  pageKey    String?
+  canCreate  Boolean @default(false)
+  canRead    Boolean @default(true)
+  canUpdate  Boolean @default(false)
+  canDelete  Boolean @default(false)
+  canApprove Boolean @default(false)
+  canExport  Boolean @default(false)
+
+  role Role @relation(fields: [roleId], references: [id])
+
+  @@unique([roleId, moduleKey, pageKey])
+}
+
+model UserSppgAccess {
+  id        String   @id @default(cuid())
+  userId    String
+  sppgId    String
+  roleId    String
+  isDefault Boolean  @default(false)
+  status    String   @default("active")
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, sppgId, roleId])
+  @@index([sppgId, roleId])
+}
+
+model Item {
+  id             String         @id @default(cuid())
+  sppgId         String
+  code           String
+  sku            String
+  barcode        String?
+  name           String
+  category       String
+  unit           String
+  usageMethod    String         @default("FEFO")
+  storageRule    String
+  minStock       Decimal        @default(0)
+  unitCost       Decimal        @default(0)
+  approvalStatus ApprovalStatus @default(draft)
+  status         RecordStatus   @default(draft)
+  createdBy      String?
+  approvedBy     String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  sppg      SppgUnit @relation(fields: [sppgId], references: [id])
+  batches   StockBatch[]
+  movements StockMovement[]
+  poItems   PurchaseOrderItem[]
+
+  @@unique([sppgId, code])
+  @@unique([sppgId, sku])
+  @@index([sppgId, status, approvalStatus])
+}
+
+model StockBatch {
+  id          String      @id @default(cuid())
+  sppgId      String
+  itemId      String
+  vendorId    String?
+  batchCode   String
+  qtyInitial  Decimal
+  qtyCurrent  Decimal
+  unit        String
+  location    String
+  receivedAt  DateTime?
+  expiredAt   DateTime?
+  qcStatus    String      @default("pending")
+  stockStatus StockStatus @default(aman)
+  status      String      @default("released")
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  sppg      SppgUnit @relation(fields: [sppgId], references: [id])
+  item      Item     @relation(fields: [itemId], references: [id])
+  vendor    Vendor?  @relation(fields: [vendorId], references: [id])
+  movements StockMovement[]
+
+  @@unique([sppgId, batchCode])
+  @@index([sppgId, stockStatus, expiredAt])
+}
+
+model StockMovement {
+  id            String   @id @default(cuid())
+  sppgId        String
+  itemId        String
+  batchId       String?
+  movementType  String
+  qty           Decimal
+  unit          String
+  reason        String?
+  referenceType String?
+  referenceId   String?
+  createdBy     String?
+  createdAt     DateTime @default(now())
+
+  item  Item        @relation(fields: [itemId], references: [id])
+  batch StockBatch? @relation(fields: [batchId], references: [id])
+
+  @@index([sppgId, itemId, createdAt])
+}
+
+model Vendor {
+  id          String       @id @default(cuid())
+  sppgId      String
+  name        String
+  category    String?
+  contactName String?
+  phone       String?
+  address     String?
+  rating      Decimal?
+  paymentTerm String?
+  status      RecordStatus @default(active)
+
+  sppg    SppgUnit @relation(fields: [sppgId], references: [id])
+  batches StockBatch[]
+  orders  PurchaseOrder[]
+
+  @@unique([sppgId, name])
+}
+
+model PurchaseRequest {
+  id          String         @id @default(cuid())
+  sppgId      String
+  requestNo   String
+  neededDate  DateTime?
+  status      ApprovalStatus @default(draft)
+  requestedBy String?
+  approvedBy  String?
+  note        String?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  orders PurchaseOrder[]
+
+  @@unique([sppgId, requestNo])
+}
+
+model PurchaseOrder {
+  id         String         @id @default(cuid())
+  sppgId     String
+  requestId  String?
+  vendorId   String
+  poNo       String
+  poDate     DateTime
+  deliveryAt DateTime?
+  subtotal   Decimal        @default(0)
+  tax        Decimal        @default(0)
+  total      Decimal        @default(0)
+  status     ApprovalStatus @default(draft)
+  createdBy  String?
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+
+  vendor  Vendor           @relation(fields: [vendorId], references: [id])
+  request PurchaseRequest? @relation(fields: [requestId], references: [id])
+  items   PurchaseOrderItem[]
+
+  @@unique([sppgId, poNo])
+}
+
+model PurchaseOrderItem {
+  id        String  @id @default(cuid())
+  poId      String
+  itemId    String
+  qty       Decimal
+  unit      String
+  unitPrice Decimal
+  total     Decimal
+
+  order PurchaseOrder @relation(fields: [poId], references: [id])
+  item  Item          @relation(fields: [itemId], references: [id])
+}
+
+model School {
+  id               String       @id @default(cuid())
+  sppgId           String
+  name             String
+  npsn             String?
+  address          String?
+  picName          String?
+  picPhone         String?
+  routeCode        String?
+  beneficiaryCount Int          @default(0)
+  status           RecordStatus @default(active)
+
+  sppg SppgUnit @relation(fields: [sppgId], references: [id])
+}
+
+model Recipe {
+  id              String       @id @default(cuid())
+  sppgId          String
+  name            String
+  targetAgeGroup  String?
+  portionSize     String?
+  nutritionTarget Json?
+  status          RecordStatus @default(active)
+  createdBy       String?
+  createdAt       DateTime     @default(now())
+
+  sppg       SppgUnit @relation(fields: [sppgId], references: [id])
+  components RecipeComponent[]
+}
+
+model RecipeComponent {
+  id            String  @id @default(cuid())
+  recipeId      String
+  itemId        String?
+  name          String?
+  qtyPerPortion Decimal
+  unit          String
+  notes         String?
+
+  recipe Recipe @relation(fields: [recipeId], references: [id])
+}
+
+model FinanceTransaction {
+  id            String   @id @default(cuid())
+  sppgId        String
+  date          DateTime
+  accountCode   String
+  type          String
+  amount        Decimal
+  description   String
+  referenceType String?
+  referenceId   String?
+  createdBy     String?
+  createdAt     DateTime @default(now())
+
+  @@index([sppgId, date, type])
+}
+
+model Asset {
+  id            String       @id @default(cuid())
+  sppgId        String
+  code          String
+  name          String
+  category      String
+  purchaseDate  DateTime?
+  purchaseValue Decimal      @default(0)
+  condition     String
+  location      String?
+  status        RecordStatus @default(active)
+  createdAt     DateTime     @default(now())
+}
+
+model Employee {
+  id              String       @id @default(cuid())
+  sppgId           String
+  employeeNo       String
+  name             String
+  roleId           String
+  phone            String?
+  joinDate         DateTime?
+  employmentStatus String       @default("active")
+  baseSalary       Decimal      @default(0)
+  status           RecordStatus @default(active)
+
+  shifts StaffRoster[]
+}
+
+model StaffRoster {
+  id         String   @id @default(cuid())
+  sppgId     String
+  employeeId String
+  shiftDate  DateTime
+  shiftType  String
+  area       String?
+  status     String   @default("scheduled")
+
+  employee Employee @relation(fields: [employeeId], references: [id])
+
+  @@index([sppgId, shiftDate, shiftType])
+}
+
+model DocumentFile {
+  id         String   @id @default(cuid())
+  sppgId     String
+  moduleKey  String
+  entityType String
+  entityId   String
+  fileName   String
+  mimeType   String
+  storageKey String
+  publicUrl  String?
+  createdBy  String?
+  createdAt  DateTime @default(now())
+
+  @@index([sppgId, moduleKey, entityType, entityId])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  sppgId     String?
+  entityType String
+  entityId   String
+  action     String
+  beforeJson Json?
+  afterJson  Json?
+  actorId    String?
+  createdAt  DateTime @default(now())
+
+  sppg SppgUnit? @relation(fields: [sppgId], references: [id])
+}
+
+model ImportJob {
+  id        String   @id @default(cuid())
+  source    String
+  status    String   @default("pending")
+  summary   Json?
+  startedAt DateTime @default(now())
+  endedAt   DateTime?
+}

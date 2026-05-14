@@ -1,0 +1,11 @@
+node_modules/
+.superpowers/
+.DS_Store
+.env
+.vercel/
+outputs/
+*.log
+__MACOSX/
+.codex-write-test
+__pycache__/
+*.pyc

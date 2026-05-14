@@ -1,0 +1,26 @@
+{
+  "name": "sipagi-saas",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "dev:local": "node scripts/local-dev-server.mjs",
+    "static": "python3 -m http.server 4173",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio",
+    "db:seed": "node prisma/seed.js",
+    "seed:gas-auth": "node scripts/seed-gas-auth.mjs",
+    "migrate:gas": "node scripts/migrate-gas-to-neon.mjs"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "@supabase/supabase-js": "^2.105.4",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "prisma": "^5.22.0",
+    "vercel": "^37.14.0"
+  }
+}
