@@ -7,6 +7,7 @@
     "dev": "vercel dev",
     "dev:local": "node scripts/local-dev-server.mjs",
     "static": "python3 -m http.server 4173",
+    "postinstall": "prisma generate",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",

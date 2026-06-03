@@ -239,7 +239,7 @@ export function AppShell({ activeModule, activeSubModule = '', title, subtitle, 
             <aside class="kt-sidebar bg-background border-e border-e-border fixed top-0 bottom-0 z-20 hidden lg:flex flex-col items-stretch shrink-0 [--sidebar-width:250px] [--kt-drawer-enable:true] lg:[--kt-drawer-enable:false]" data-kt-drawer="true" data-kt-drawer-class="kt-drawer kt-drawer-start top-0 bottom-0" id="sidebar">
                 <div class="kt-sidebar-header hidden lg:flex items-center relative justify-between px-3 lg:px-5 shrink-0" id="sidebar_header">
                     <a class="flex items-center gap-2.5" href="#${encodeRoute('dashboard')}">
-                        <img class="sipagi-shell-logo" src="./assets/images/sipagi-logo.png" alt="SIPAGI ERP Suite">
+                        <img class="sipagi-shell-logo" src="/app/assets/images/sipagi-logo.png" alt="SIPAGI ERP Suite">
                         <span class="default-logo flex flex-col">
                             <span class="text-base font-semibold text-mono leading-none">SIPAGI</span>
                             <span class="text-xs font-medium text-secondary-foreground">ERP Suite</span>
